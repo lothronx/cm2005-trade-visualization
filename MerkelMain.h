@@ -2,41 +2,42 @@
 
 #include <vector>
 #include "OrderBookEntry.h"
-//#include "OrderBook.h"
-//#include "Wallet.h"
+#include "OrderBook.h"
+#include "Wallet.h"
 
 
 class MerkelMain {
 public:
-  MerkelMain() = default;
+    MerkelMain() = default;
 
-  /** Call this to start the sim */
-  void init();
+    /** Call this to start the sim */
+    void init();
 
 private:
-  void printMenu();
+    void printMenu();
 
-  void printError();
+    void printError();
 
-  void printHelp();
+    void printHelp();
 
-  void printMarketStats();
+    void printMarketStats();
 
-  void enterAsk();
+    void enterAsk();
 
-  void enterBid();
+    void enterBid();
 
-  void printWallet();
+    void printWallet();
 
-  void gotoNextTimeframe();
+    void gotoNextTimeframe();
 
-  int getUserOption();
+    int getUserOption();
 
-  void processUserOption(int userOption);
+    void processUserOption(int userOption);
 
-//  std::string currentTime;
-//
-//  OrderBook orderBook{"20200601.csv"};
-//  Wallet wallet;
+    string currentTime;
+
+    OrderBook orderBook{"../20200601.csv"};
+
+    Wallet wallet;
 
 };

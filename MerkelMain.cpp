@@ -5,14 +5,15 @@
 #include "OrderBookEntry.h"
 #include "CSVReader.h"
 
+
 using namespace std;
 
 void MerkelMain::init() {
     int input;
 
-//    currentTime = orderBook.getEarliestTime();
-//
-//    wallet.insertCurrency("BTC", 10);
+    currentTime = orderBook.getEarliestTime();
+
+    wallet.insertCurrency("BTC", 10);
 
     while (true) {
         printMenu();
@@ -37,7 +38,7 @@ void MerkelMain::printMenu() {
 
          << "============== " << endl;
 
-//    cout << "Current time is: " << currentTime << endl;
+    cout << "Current time is: " << currentTime << endl;
 }
 
 void MerkelMain::printError() {
@@ -49,109 +50,99 @@ void MerkelMain::printHelp() {
 }
 
 void MerkelMain::printMarketStats() {
-//  for (string const& p : orderBook.getKnownProducts())
-//  {
-//    cout << "Product: " << p << endl;
-//    vector<OrderBookEntry> entries = orderBook.getOrders(OrderBookType::ask,
-//                                                              p, currentTime);
-//    cout << "Asks seen: " << entries.size() << endl;
-//    cout << "Max ask: " << OrderBook::getHighPrice(entries) << endl;
-//    cout << "Min ask: " << OrderBook::getLowPrice(entries) << endl;
+    for (string const &p: orderBook.getKnownProducts()) {
+        cout << "Product: " << p << endl;
+        vector<OrderBookEntry> entries = orderBook.getOrders(OrderBookType::ask,
+                                                             p, currentTime);
+        cout << "Asks seen: " << entries.size() << endl;
+        cout << "Max ask: " << OrderBook::getHighPrice(entries) << endl;
+        cout << "Min ask: " << OrderBook::getLowPrice(entries) << endl;
 
+    }
 }
 
 void MerkelMain::enterAsk() {
-//  cout << "Make an ask - enter the amount: product,price, amount, eg  ETH/BTC,200,0.5" << endl;
-//  string input;
-//  getline(cin, input);
-//
-//  vector<string> tokens = CSVReader::tokenise(input, ',');
-//  if (tokens.size() != 3)
-//  {
-//    cout << "MerkelMain::enterAsk Bad input! " << input << endl;
-//  }
-//  else {
-//    try {
-//      OrderBookEntry obe = CSVReader::stringsToOBE(
-//          tokens[1],
-//          tokens[2],
-//          currentTime,
-//          tokens[0],
-//          OrderBookType::ask
-//      );
-//      obe.username = "simuser";
-//      if (wallet.canFulfillOrder(obe))
-//      {
-//        cout << "Wallet looks good. " << endl;
-//        orderBook.insertOrder(obe);
-//      }
-//      else {
-//        cout << "Wallet has insufficient funds . " << endl;
-//      }
-//    }catch (const exception& e)
-//    {
-//      cout << " MerkelMain::enterAsk Bad input " << endl;
-//    }
-//  }
+    cout << "Make an ask - enter the amount: product,price, amount, eg  ETH/BTC,200,0.5" << endl;
+    string input;
+    getline(cin, input);
+
+    vector<string> tokens = CSVReader::tokenise(input, ',');
+    if (tokens.size() != 3) {
+        cout << "MerkelMain::enterAsk Bad input! " << input << endl;
+    } else {
+        try {
+            OrderBookEntry obe = CSVReader::stringsToOBE(
+                    tokens[1],
+                    tokens[2],
+                    currentTime,
+                    tokens[0],
+                    OrderBookType::ask
+            );
+            obe.setUsername("simuser");
+            if (wallet.canFulfillOrder(obe)) {
+                cout << "Wallet looks good. " << endl;
+                orderBook.insertOrder(obe);
+            } else {
+                cout << "Wallet has insufficient funds . " << endl;
+            }
+        } catch (const exception &e) {
+            cout << " MerkelMain::enterAsk Bad input " << endl;
+        }
+    }
 }
 
 void MerkelMain::enterBid() {
-//  cout << "Make an bid - enter the amount: product,price, amount, eg  ETH/BTC,200,0.5" << endl;
-//  string input;
-//  getline(cin, input);
-//
-//  vector<string> tokens = CSVReader::tokenise(input, ',');
-//  if (tokens.size() != 3)
-//  {
-//    cout << "MerkelMain::enterBid Bad input! " << input << endl;
-//  }
-//  else {
-//    try {
-//      OrderBookEntry obe = CSVReader::stringsToOBE(
-//          tokens[1],
-//          tokens[2],
-//          currentTime,
-//          tokens[0],
-//          OrderBookType::bid
-//      );
-//      obe.username = "simuser";
-//
-//      if (wallet.canFulfillOrder(obe))
-//      {
-//        cout << "Wallet looks good. " << endl;
-//        orderBook.insertOrder(obe);
-//      }
-//      else {
-//        cout << "Wallet has insufficient funds . " << endl;
-//      }
-//    }catch (const exception& e)
-//    {
-//      cout << " MerkelMain::enterBid Bad input " << endl;
-//    }
-//  }
+    cout << "Make an bid - enter the amount: product,price, amount, eg  ETH/BTC,200,0.5" << endl;
+    string input;
+    getline(cin, input);
+
+    vector<string> tokens = CSVReader::tokenise(input, ',');
+    if (tokens.size() != 3) {
+        cout << "MerkelMain::enterBid Bad input! " << input << endl;
+    } else {
+        try {
+            OrderBookEntry obe = CSVReader::stringsToOBE(
+                    tokens[1],
+                    tokens[2],
+                    currentTime,
+                    tokens[0],
+                    OrderBookType::bid
+            );
+            obe.setUsername("simuser");
+
+            if (wallet.canFulfillOrder(obe)) {
+                cout << "Wallet looks good. " << endl;
+                orderBook.insertOrder(obe);
+            } else {
+                cout << "Wallet has insufficient funds . " << endl;
+            }
+        } catch (const exception &e) {
+            cout << " MerkelMain::enterBid Bad input " << endl;
+        }
+    }
 }
 
 void MerkelMain::printWallet() {
-    //cout << wallet.toString() << endl;
+    cout << wallet.toString() << endl;
 }
 
 void MerkelMain::gotoNextTimeframe() {
-//  cout << "Going to next time frame. " << endl;
-//  for (string p: orderBook.getKnownProducts()) {
-//    cout << "matching " << p << endl;
-//    vector<OrderBookEntry> sales = orderBook.matchAsksToBids(p, currentTime);
-//    cout << "Sales: " << sales.size() << endl;
-//    for (OrderBookEntry &sale: sales) {
-//      cout << "Sale price: " << sale.price << " amount " << sale.amount << endl;
-//      if (sale.username == "simuser") {
-//        // update the wallet
-//        wallet.processSale(sale);
-//      }
-//    }
-//
-//  }
-//
-//  currentTime = orderBook.getNextTime(currentTime);
+    cout << "Going to next time frame. " << endl;
+    for (string p: orderBook.getKnownProducts()) {
+        cout << "matching " << p << endl;
+        vector<OrderBookEntry> sales = orderBook.matchAsksToBids(p, currentTime);
+        cout << "Sales: " << sales.size() << endl;
+        for (OrderBookEntry &sale: sales) {
+            cout << "Sale price: " << sale.getPrice() << " amount " << sale.getAmount() << endl;
+            if (sale.getUsername() == "simuser") {
+                // update the wallet
+                wallet.processSale(sale);
+            }
+        }
+
+    }
+
+    currentTime = orderBook.getNextTime(currentTime);
 }
 
 int MerkelMain::getUserOption() {
