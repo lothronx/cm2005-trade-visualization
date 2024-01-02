@@ -169,7 +169,7 @@ int MerkelMain::getUserOption() {
 void MerkelMain::processUserOption(int userOption) {
     // I wrote the following code
 
-    // map integers to function pointers
+    // map integers (keys) to function pointers (values)
     map<int, void (MerkelMain::*)()> menu;
     menu[0] = &MerkelMain::printError;
     menu[1] = &MerkelMain::printHelp;
@@ -179,9 +179,9 @@ void MerkelMain::processUserOption(int userOption) {
     menu[5] = &MerkelMain::printWallet;
     menu[6] = &MerkelMain::gotoNextTimeframe;
 
-    // check if the userOption is valid
+    // check if the userOption is a valid key
     if (menu.find(userOption) != menu.end()) {
-        // If valid, call the function
+        // If valid, call the corresponding function
         (this->*menu[userOption])();
     } else {
         // otherwise, print the error message

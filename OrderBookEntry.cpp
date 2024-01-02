@@ -6,19 +6,41 @@ OrderBookEntry::OrderBookEntry(double _price,
                                string _product,
                                OrderBookType _orderType,
                                string _username)
-    : price{_price},
-      amount{_amount},
-      timestamp{_timestamp},
-      product{_product},
-      orderType{_orderType},
-      username{_username} {}
+        : price{_price},
+          amount{_amount},
+          timestamp{_timestamp},
+          product{_product},
+          orderType{_orderType},
+          username{_username} {}
+
+double OrderBookEntry::getPrice() const { return price; }
+
+double OrderBookEntry::getAmount() const { return amount; }
+
+string OrderBookEntry::getTimestamp() const { return timestamp; }
+
+string OrderBookEntry::getProduct() const { return product; }
+
+OrderBookType OrderBookEntry::getOrderType() const { return orderType; }
 
 OrderBookType OrderBookEntry::stringToOrderBookType(string s) {
-  if (s == "ask") {
-    return OrderBookType::ask;
-  }
-  if (s == "bid") {
-    return OrderBookType::bid;
-  }
-  return OrderBookType::unknown;
+    if (s == "ask") {
+        return OrderBookType::ask;
+    }
+    if (s == "bid") {
+        return OrderBookType::bid;
+    }
+    return OrderBookType::unknown;
+}
+
+bool OrderBookEntry::compareByTimestamp(OrderBookEntry &e1, OrderBookEntry &e2) {
+    return e1.timestamp < e2.timestamp;
+}
+
+bool OrderBookEntry::compareByPriceAsc(OrderBookEntry &e1, OrderBookEntry &e2) {
+    return e1.price < e2.price;
+}
+
+bool OrderBookEntry::compareByPriceDesc(OrderBookEntry &e1, OrderBookEntry &e2) {
+    return e1.price > e2.price;
 }
