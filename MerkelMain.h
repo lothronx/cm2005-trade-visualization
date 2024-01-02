@@ -1,10 +1,15 @@
 #pragma once
 
+#include <iostream>
 #include <vector>
+#include<map>
 #include "OrderBookEntry.h"
 #include "OrderBook.h"
 #include "Wallet.h"
+#include "CSVReader.h"
+#include "Candlestick.h"
 
+using namespace std;
 
 class MerkelMain {
 public:
@@ -30,12 +35,15 @@ private:
 
     void gotoNextTimeframe();
 
+    void printCandlesticks();
+
     int getUserOption();
 
     void processUserOption(int userOption);
 
     string currentTime;
 
+    // Because I'm using CLion to run the code, the relative path here is relative to the cmake-build-debug folder not the root folder. Thus, "../" is needed here.
     OrderBook orderBook{"../20200601.csv"};
 
     Wallet wallet;

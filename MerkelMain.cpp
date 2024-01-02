@@ -1,12 +1,4 @@
 #include "MerkelMain.h"
-#include <iostream>
-#include <vector>
-#include<map>
-#include "OrderBookEntry.h"
-#include "CSVReader.h"
-
-
-using namespace std;
 
 void MerkelMain::init() {
     int input;
@@ -36,13 +28,15 @@ void MerkelMain::printMenu() {
          // 6 continue
          << "6: Continue " << endl
 
-         << "============== " << endl;
+         << "7: Print candlesticks " << endl
 
-    cout << "Current time is: " << currentTime << endl;
+         << "============== " << endl
+
+         << "Current time is: " << currentTime << endl;
 }
 
 void MerkelMain::printError() {
-    cout << "Invalid choice. Choose 1-6" << endl;
+    cout << "Invalid choice. Choose 1-7" << endl;
 }
 
 void MerkelMain::printHelp() {
@@ -145,10 +139,29 @@ void MerkelMain::gotoNextTimeframe() {
     currentTime = orderBook.getNextTime(currentTime);
 }
 
+// I wrote the following code
+void MerkelMain::printCandlesticks() {
+    cout << "View market trends in candlesticks - enter: product,ask or bid. E.g., ETH/BTC,bid" << endl;
+    string input;
+    getline(cin, input);
+
+    vector<string> tokens = CSVReader::tokenise(input, ',');
+    if (tokens.size() != 2) {
+        cout << "MerkelMain::printCandlesticks Bad input! " << input << endl;
+    } else {
+        try {
+
+        } catch (const exception &e) {
+            cout << " MerkelMain::printCandlesticks Bad input " << endl;
+        }
+    }
+}
+// end of my code
+
 int MerkelMain::getUserOption() {
     int userOption = 0;
     string line;
-    cout << "Type in 1-6" << endl;
+    cout << "Type in 1-7" << endl;
     getline(cin, line);
     try {
         userOption = stoi(line);
@@ -158,8 +171,8 @@ int MerkelMain::getUserOption() {
 }
 
 void MerkelMain::processUserOption(int userOption) {
-    // I wrote the following code
 
+    // I wrote the following code
     // map integers (keys) to function pointers (values)
     map<int, void (MerkelMain::*)()> menu;
     menu[0] = &MerkelMain::printError;
@@ -169,6 +182,7 @@ void MerkelMain::processUserOption(int userOption) {
     menu[4] = &MerkelMain::enterBid;
     menu[5] = &MerkelMain::printWallet;
     menu[6] = &MerkelMain::gotoNextTimeframe;
+    menu[7] = &MerkelMain::printCandlesticks;
 
     // check if the userOption is a valid key
     if (menu.find(userOption) != menu.end()) {
@@ -178,6 +192,5 @@ void MerkelMain::processUserOption(int userOption) {
         // otherwise, print the error message
         printError();
     }
-
     // end of my code
 }

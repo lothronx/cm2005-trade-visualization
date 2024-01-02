@@ -1,14 +1,8 @@
 #include "OrderBook.h"
-#include "CSVReader.h"
-#include <map>
-#include <algorithm>
-#include <iostream>
-
 
 /** construct, reading a csv data file */
-OrderBook::OrderBook(string filename) {
-    orders = CSVReader::readCSV(filename);
-}
+OrderBook::OrderBook(const string &filename)
+        : orders{CSVReader::readCSV(filename)} {}
 
 /** return vector of all know products in the dataset*/
 vector<string> OrderBook::getKnownProducts() {
@@ -21,6 +15,7 @@ vector<string> OrderBook::getKnownProducts() {
     }
 
     // now flatten the map to a vector of strings
+    products.reserve(prodMap.size());
     for (auto const &e: prodMap) {
         products.push_back(e.first);
     }
@@ -30,8 +25,8 @@ vector<string> OrderBook::getKnownProducts() {
 
 /** return vector of Orders according to the sent filters*/
 vector<OrderBookEntry> OrderBook::getOrders(OrderBookType type,
-                                            string product,
-                                            string timestamp) {
+                                            const string &product,
+                                            const string &timestamp) {
     vector<OrderBookEntry> orders_sub;
     for (OrderBookEntry &e: orders) {
         if (e.getOrderType() == type &&
@@ -65,15 +60,15 @@ string OrderBook::getEarliestTime() {
     return orders[0].getTimestamp();
 }
 
-string OrderBook::getNextTime(string timestamp) {
-    string next_timestamp = "";
+string OrderBook::getNextTime(const string &timestamp) {
+    string next_timestamp{};
     for (OrderBookEntry &e: orders) {
         if (e.getTimestamp() > timestamp) {
             next_timestamp = e.getTimestamp();
             break;
         }
     }
-    if (next_timestamp == "") {
+    if (next_timestamp.empty()) {
         next_timestamp = orders[0].getTimestamp();
     }
     return next_timestamp;
@@ -84,7 +79,7 @@ void OrderBook::insertOrder(OrderBookEntry &order) {
     sort(orders.begin(), orders.end(), OrderBookEntry::compareByTimestamp);
 }
 
-vector<OrderBookEntry> OrderBook::matchAsksToBids(string product, string timestamp) {
+vector<OrderBookEntry> OrderBook::matchAsksToBids(const string &product, const string &timestamp) {
 // asks = orderbook.asks
     vector<OrderBookEntry> asks = getOrders(OrderBookType::ask,
                                             product,
@@ -99,7 +94,7 @@ vector<OrderBookEntry> OrderBook::matchAsksToBids(string product, string timesta
 
     // I put in a little check to ensure we have bids and asks
     // to process.
-    if (asks.size() == 0 || bids.size() == 0) {
+    if (asks.empty() || bids.empty()) {
         cout << " OrderBook::matchAsksToBids no bids or asks" << endl;
         return sales;
     }

@@ -1,10 +1,4 @@
 #include "CSVReader.h"
-#include <iostream>
-#include <sstream>
-#include <fstream>
-#include <utility>
-
-using namespace std;
 
 vector<OrderBookEntry> CSVReader::readCSV(const string &csvFilename) {
     vector<OrderBookEntry> entries;
@@ -32,7 +26,6 @@ vector<string> CSVReader::tokenise(const string &csvLine, char separator) {
     vector<string> tokens;
 
     // I wrote the following code
-
     // turn csvLine into a stream
     stringstream ss(csvLine);
     // read tokens from the stream into a vector
@@ -41,7 +34,6 @@ vector<string> CSVReader::tokenise(const string &csvLine, char separator) {
         getline(ss, token, separator);
         tokens.push_back(token);
     }
-
     // end of my code
 
     return tokens;
