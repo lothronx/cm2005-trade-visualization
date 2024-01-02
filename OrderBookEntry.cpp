@@ -17,11 +17,19 @@ double OrderBookEntry::getPrice() const { return price; }
 
 double OrderBookEntry::getAmount() const { return amount; }
 
+void OrderBookEntry::setAmount(double _amount) { amount = _amount; }
+
 string OrderBookEntry::getTimestamp() const { return timestamp; }
 
 string OrderBookEntry::getProduct() const { return product; }
 
 OrderBookType OrderBookEntry::getOrderType() const { return orderType; }
+
+void OrderBookEntry::setOrderType(OrderBookType _orderType) { orderType = _orderType; }
+
+string OrderBookEntry::getUsername() const { return username; }
+
+void OrderBookEntry::setUsername(string _username) { username = _username; }
 
 OrderBookType OrderBookEntry::stringToOrderBookType(string s) {
     if (s == "ask") {

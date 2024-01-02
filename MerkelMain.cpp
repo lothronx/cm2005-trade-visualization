@@ -3,16 +3,16 @@
 #include <vector>
 #include<map>
 #include "OrderBookEntry.h"
-//#include "CSVReader.h"
+#include "CSVReader.h"
 
 using namespace std;
 
 void MerkelMain::init() {
     int input;
 
-//  currentTime = orderBook.getEarliestTime();
-
-//  wallet.insertCurrency("BTC", 10);
+//    currentTime = orderBook.getEarliestTime();
+//
+//    wallet.insertCurrency("BTC", 10);
 
     while (true) {
         printMenu();
@@ -37,7 +37,7 @@ void MerkelMain::printMenu() {
 
          << "============== " << endl;
 
-// cout << "Current time is: " << currentTime << endl;
+//    cout << "Current time is: " << currentTime << endl;
 }
 
 void MerkelMain::printError() {

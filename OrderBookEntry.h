@@ -5,7 +5,7 @@
 using namespace std;
 
 enum class OrderBookType {
-    bid, ask, unknown
+    bid, ask, unknown, bidsale, asksale
 };
 
 class OrderBookEntry {
@@ -21,11 +21,19 @@ public:
 
     double getAmount() const;
 
+    void setAmount(double _amount);
+
     string getTimestamp() const;
 
     string getProduct() const;
 
     OrderBookType getOrderType() const;
+
+    void setOrderType(OrderBookType _orderType);
+
+    string getUsername() const;
+
+    void setUsername(string _username);
 
     static OrderBookType stringToOrderBookType(string s);
 
