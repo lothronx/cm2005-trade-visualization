@@ -139,14 +139,14 @@ void MerkelMain::gotoNextTimeframe() {
         }
 
     }
-
     currentTime = orderBook.getNextTime(currentTime);
 }
 
 // I wrote the following code
 void MerkelMain::printCandlesticks() {
-
-    cout << "View market trends in candlesticks - enter: product,order type. E.g., ETH/BTC,bid" << endl;
+    cout
+            << "View the market trends in the past 30 seconds in candlesticks - enter: product,order type. E.g., ETH/BTC,bid"
+            << endl;
 
     string input;
     getline(cin, input);
@@ -158,53 +158,13 @@ void MerkelMain::printCandlesticks() {
     if (tokens.size() != 2 ||
         find(productList.begin(), productList.end(), tokens[0]) == productList.end() ||
         (tokens[1] != "ask" && tokens[1] != "bid")) {
-        cout << "MerkelMain::printCandlesticks Bad input! " << input << endl;
+        cout << "MerkelMain::printCandlesticks Bad input! Please use this format: ETH/BTC,bid" << endl;
     } else {
-        vector<Candlestick> candlesticks{};
-        string time = currentTime;
-        for (int i = 0; i < 6; ++i) {
-            vector<OrderBookEntry> currentEntries = orderBook.getOrders(
-                    OrderBookEntry::stringToOrderBookType(tokens[1]),
-                    tokens[0],
-                    time);
-            time = orderBook.getPreviousTime(time);
-            vector<OrderBookEntry> previousEntries = orderBook.getOrders(
-                    OrderBookEntry::stringToOrderBookType(tokens[1]),
-                    tokens[0],
-                    time);
-            candlesticks.push_back({
-                                           orderBook.getNextTime(time),
-                                           OrderBook::getAveragePrice(previousEntries),
-                                           OrderBook::getHighPrice(currentEntries),
-                                           OrderBook::getLowPrice(currentEntries),
-                                           OrderBook::getAveragePrice(currentEntries)});
-        }
-
-        cout << endl
-             << setw(30) << "\033[1;51m  >>> " << tokens[1] << "s on " << tokens[0] << " <<<  \033[0m"
-             << endl << endl
-             << "Time" << setw(15)
-             << "Open" << setw(15)
-             << "High" << setw(15)
-             << "Low" << setw(15)
-             << "Close" << endl;
-        for (auto &candlestick: ranges::reverse_view(candlesticks)) {
-            if (candlestick.open < candlestick.close) {
-                cout << "\033[32m";
-            } else if (candlestick.open > candlestick.close) {
-                cout << "\033[31m";
-            } else {
-                cout << "\033[33m";
-            }
-
-            cout << (candlestick.time).substr(11, 8)
-                 << setw(15) << candlestick.open
-                 << setw(15) << candlestick.high
-                 << setw(15) << candlestick.low
-                 << setw(15) << candlestick.close
-                 << endl;
-        }
-        cout << "\033[0m" << endl;
+        Candlesticks candlesticks{tokens[0],
+                                  OrderBookEntry::stringToOrderBookType(tokens[1]),
+                                  currentTime,
+                                  orderBook};
+        candlesticks.printTable();
     }
 }
 // end of my code

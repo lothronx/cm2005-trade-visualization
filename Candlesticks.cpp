@@ -2,29 +2,71 @@
 
 Candlesticks::Candlesticks(string _product,
                            OrderBookType _orderType,
-                           string _timestamp) :
+                           string _timestamp,
+                           OrderBook _orderBook) :
         product{_product},
         orderType{_orderType},
-        timestamp{_timestamp} {}
+        timestamp{_timestamp},
+        orderBook{_orderBook} {}
 
 vector<Candlestick> Candlesticks::compute() {
     vector<Candlestick> candlesticks{};
+    string time = timestamp;
     for (int i = 0; i < 6; ++i) {
-        candlesticks.push_back({"111", 1, 1, 1, 1});
+        vector<OrderBookEntry> currentEntries = orderBook.getOrders(orderType,
+                                                                    product,
+                                                                    time);
+        time = orderBook.getPreviousTime(time);
+        vector<OrderBookEntry> previousEntries = orderBook.getOrders(orderType,
+                                                                     product,
+                                                                     time);
+        candlesticks.push_back({
+                                       orderBook.getNextTime(time),
+                                       OrderBook::getAveragePrice(previousEntries),
+                                       OrderBook::getHighPrice(currentEntries),
+                                       OrderBook::getLowPrice(currentEntries),
+                                       OrderBook::getAveragePrice(currentEntries)});
     }
     return candlesticks;
-};
+}
 
 void Candlesticks::printTable() {
     vector<Candlestick> candlesticks = compute();
-    for (const Candlestick &candlestick: candlesticks) {
-        cout << "Time: " << candlestick.time << endl
-             << "Open: " << candlestick.open << endl
-             << "High: " << candlestick.high << endl
-             << "Low: " << candlestick.low << endl
-             << "Close: " << candlestick.close << endl
-             << "---------------" << endl;
-    };
-};
 
-void Candlesticks::printPlot() {};
+    string type{};
+    if (orderType == OrderBookType::ask) {
+        type = "Ask";
+    } else {
+        type = "Bid";
+    }
+
+    cout << endl
+         << setw(30) << "\033[1;51m  >>> " << type << "s on " << product << " <<<  \033[0m"
+         << endl << endl;
+
+    cout << "Time" << setw(15)
+         << "Open" << setw(15)
+         << "High" << setw(15)
+         << "Low" << setw(15)
+         << "Close" << endl;
+
+    for (auto &candlestick: ranges::reverse_view(candlesticks)) {
+        if (candlestick.open < candlestick.close) {
+            cout << "\033[32m";
+        } else if (candlestick.open > candlestick.close) {
+            cout << "\033[31m";
+        } else {
+            cout << "\033[33m";
+        }
+
+        cout << (candlestick.time).substr(11, 8) << setw(15)
+             << candlestick.open << setw(15)
+             << candlestick.high << setw(15)
+             << candlestick.low << setw(15)
+             << candlestick.close << endl;
+    }
+
+    cout << "\033[0m" << endl;
+}
+
+void Candlesticks::printPlot() {}

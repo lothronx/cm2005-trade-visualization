@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <ranges>
 #include "OrderBook.h"
 
 using namespace std;
@@ -16,9 +17,10 @@ struct Candlestick {
 class Candlesticks {
 public:
     /** construct, each candlestick should have 5 parameters */
-    Candlesticks(string _product, OrderBookType _orderType, string _timestamp);
-
-    vector<Candlestick> compute();
+    Candlesticks(string _product,
+                 OrderBookType _orderType,
+                 string _timestamp,
+                 OrderBook _orderBook);
 
     void printTable();
 
@@ -28,4 +30,7 @@ private:
     string product;
     OrderBookType orderType;
     string timestamp;
+    OrderBook orderBook;
+
+    vector<Candlestick> compute();
 };
