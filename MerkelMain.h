@@ -1,8 +1,10 @@
 #pragma once
 
 #include <iostream>
+#include <iomanip>
 #include <vector>
 #include<map>
+#include <ranges>
 #include <algorithm>
 #include "OrderBook.h"
 #include "CSVReader.h"
