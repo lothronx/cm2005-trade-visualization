@@ -23,6 +23,13 @@ public:
                                      const string &product,
                                      const string &timestamp);
 
+
+    static double getHighPrice(vector<OrderBookEntry> &orders);
+
+    static double getLowPrice(vector<OrderBookEntry> &orders);
+
+    static double getAveragePrice(vector<OrderBookEntry> &orders);
+
     /** returns the earliest time in the orderbook*/
     string getEarliestTime();
 
@@ -32,11 +39,9 @@ public:
      * */
     string getNextTime(const string &timestamp);
 
+    string getPreviousTime(const string &timestamp);
+
     void insertOrder(const OrderBookEntry &order);
-
-    static double getHighPrice(vector<OrderBookEntry> &orders);
-
-    static double getLowPrice(vector<OrderBookEntry> &orders);
 
     vector<OrderBookEntry> matchAsksToBids(const string &product, const string &timestamp);
 

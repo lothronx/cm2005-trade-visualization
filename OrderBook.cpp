@@ -38,6 +38,31 @@ vector<OrderBookEntry> OrderBook::getOrders(const OrderBookType &type,
     return orders_sub;
 }
 
+double OrderBook::getHighPrice(vector<OrderBookEntry> &orders) {
+    double max = orders[0].getPrice();
+    for (OrderBookEntry &e: orders) {
+        if (e.getPrice() > max)max = e.getPrice();
+    }
+    return max;
+}
+
+double OrderBook::getLowPrice(vector<OrderBookEntry> &orders) {
+    double min = orders[0].getPrice();
+    for (OrderBookEntry &e: orders) {
+        if (e.getPrice() < min)min = e.getPrice();
+    }
+    return min;
+}
+
+double OrderBook::getAveragePrice(vector<OrderBookEntry> &orders) {
+    double sum{};
+    for (OrderBookEntry &e: orders) {
+        sum += e.getPrice();
+    }
+    double avg = sum / orders.size();
+    return avg;
+}
+
 string OrderBook::getEarliestTime() {
     return orders[0].getTimestamp();
 }
@@ -56,28 +81,24 @@ string OrderBook::getNextTime(const string &timestamp) {
     return next_timestamp;
 }
 
+string OrderBook::getPreviousTime(const string &timestamp) {
+    string previous_timestamp{};
+    for (auto it = orders.rbegin(); it != orders.rend(); ++it) {
+        if (it->getTimestamp() < timestamp) {
+            previous_timestamp = it->getTimestamp();
+            break;
+        }
+    }
+    if (previous_timestamp.empty()) {
+        previous_timestamp = orders[0].getTimestamp();
+    }
+    return previous_timestamp;
+}
+
 void OrderBook::insertOrder(const OrderBookEntry &order) {
     orders.push_back(order);
     sort(orders.begin(), orders.end(), OrderBookEntry::compareByTimestamp);
 }
-
-double OrderBook::getHighPrice(vector<OrderBookEntry> &orders) {
-    double max = orders[0].getPrice();
-    for (OrderBookEntry &e: orders) {
-        if (e.getPrice() > max)max = e.getPrice();
-    }
-    return max;
-}
-
-
-double OrderBook::getLowPrice(vector<OrderBookEntry> &orders) {
-    double min = orders[0].getPrice();
-    for (OrderBookEntry &e: orders) {
-        if (e.getPrice() < min)min = e.getPrice();
-    }
-    return min;
-}
-
 
 vector<OrderBookEntry> OrderBook::matchAsksToBids(const string &product, const string &timestamp) {
 // asks = orderbook.asks

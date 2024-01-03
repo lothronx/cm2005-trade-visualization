@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include<map>
+#include <algorithm>
 #include "OrderBook.h"
 #include "CSVReader.h"
 #include "Wallet.h"

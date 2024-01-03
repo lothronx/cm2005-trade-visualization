@@ -3,9 +3,13 @@
 void MerkelMain::init() {
     int input;
 
-    currentTime = orderBook.getEarliestTime();
-
     wallet.insertCurrency("BTC", 10);
+
+    currentTime = orderBook.getEarliestTime();
+    // because we offer users the option to print previous market trends, we can't start from the earliest timestamp--there will be no trends to print! Let's start from the 7th timestamp instead.
+    for (int i = 0; i < 6; ++i) {
+        currentTime = orderBook.getNextTime(currentTime);
+    }
 
     while (true) {
         printMenu();
@@ -122,7 +126,7 @@ void MerkelMain::printWallet() {
 
 void MerkelMain::gotoNextTimeframe() {
     cout << "Going to next time frame. " << endl;
-    for (string p: orderBook.getKnownProducts()) {
+    for (const string &p: orderBook.getKnownProducts()) {
         cout << "matching " << p << endl;
         vector<OrderBookEntry> sales = orderBook.matchAsksToBids(p, currentTime);
         cout << "Sales: " << sales.size() << endl;
@@ -141,16 +145,30 @@ void MerkelMain::gotoNextTimeframe() {
 
 // I wrote the following code
 void MerkelMain::printCandlesticks() {
-    cout << "View market trends in candlesticks - enter: product,ask or bid. E.g., ETH/BTC,bid" << endl;
+
+    cout << "View market trends in candlesticks - enter: product,order type. E.g., ETH/BTC,bid" << endl;
+
     string input;
     getline(cin, input);
 
     vector<string> tokens = CSVReader::tokenise(input, ',');
-    if (tokens.size() != 2) {
+
+    vector<string> productList{orderBook.getKnownProducts()};
+
+    if (tokens.size() != 2 ||
+        find(productList.begin(), productList.end(), tokens[0]) == productList.end() ||
+        (tokens[1] != "ask" && tokens[1] != "bid")) {
         cout << "MerkelMain::printCandlesticks Bad input! " << input << endl;
     } else {
+        vector<OrderBookEntry> entries = orderBook.getOrders(OrderBookType::ask,
+                                                             tokens[0], currentTime);
         try {
+            Candlesticks candlesticks{tokens[0],
+                                      OrderBookEntry::stringToOrderBookType(tokens[1]),
+                                      currentTime};
 
+            candlesticks.printTable();
+            candlesticks.printPlot();
         } catch (const exception &e) {
             cout << " MerkelMain::printCandlesticks Bad input " << endl;
         }
