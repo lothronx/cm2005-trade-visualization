@@ -20,9 +20,9 @@ public:
 
     static OrderBookEntry stringsToOBE(const string &price,
                                        const string &amount,
-                                       string timestamp,
-                                       string product,
-                                       OrderBookType OrderBookType);
+                                       const string &timestamp,
+                                       const string &product,
+                                       const OrderBookType &orderType);
 
 private:
     static OrderBookEntry stringsToOBE(vector<string> strings);

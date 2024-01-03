@@ -24,7 +24,7 @@ vector<string> OrderBook::getKnownProducts() {
 }
 
 /** return vector of Orders according to the sent filters*/
-vector<OrderBookEntry> OrderBook::getOrders(OrderBookType type,
+vector<OrderBookEntry> OrderBook::getOrders(const OrderBookType &type,
                                             const string &product,
                                             const string &timestamp) {
     vector<OrderBookEntry> orders_sub;
@@ -36,24 +36,6 @@ vector<OrderBookEntry> OrderBook::getOrders(OrderBookType type,
         }
     }
     return orders_sub;
-}
-
-
-double OrderBook::getHighPrice(vector<OrderBookEntry> &orders) {
-    double max = orders[0].getPrice();
-    for (OrderBookEntry &e: orders) {
-        if (e.getPrice() > max)max = e.getPrice();
-    }
-    return max;
-}
-
-
-double OrderBook::getLowPrice(vector<OrderBookEntry> &orders) {
-    double min = orders[0].getPrice();
-    for (OrderBookEntry &e: orders) {
-        if (e.getPrice() < min)min = e.getPrice();
-    }
-    return min;
 }
 
 string OrderBook::getEarliestTime() {
@@ -74,10 +56,28 @@ string OrderBook::getNextTime(const string &timestamp) {
     return next_timestamp;
 }
 
-void OrderBook::insertOrder(OrderBookEntry &order) {
+void OrderBook::insertOrder(const OrderBookEntry &order) {
     orders.push_back(order);
     sort(orders.begin(), orders.end(), OrderBookEntry::compareByTimestamp);
 }
+
+double OrderBook::getHighPrice(vector<OrderBookEntry> &orders) {
+    double max = orders[0].getPrice();
+    for (OrderBookEntry &e: orders) {
+        if (e.getPrice() > max)max = e.getPrice();
+    }
+    return max;
+}
+
+
+double OrderBook::getLowPrice(vector<OrderBookEntry> &orders) {
+    double min = orders[0].getPrice();
+    for (OrderBookEntry &e: orders) {
+        if (e.getPrice() < min)min = e.getPrice();
+    }
+    return min;
+}
+
 
 vector<OrderBookEntry> OrderBook::matchAsksToBids(const string &product, const string &timestamp) {
 // asks = orderbook.asks

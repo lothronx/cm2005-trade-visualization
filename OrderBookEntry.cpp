@@ -31,7 +31,7 @@ string OrderBookEntry::getUsername() const { return username; }
 
 void OrderBookEntry::setUsername(string _username) { username = _username; }
 
-OrderBookType OrderBookEntry::stringToOrderBookType(string s) {
+OrderBookType OrderBookEntry::stringToOrderBookType(const string &s) {
     if (s == "ask") {
         return OrderBookType::ask;
     }
@@ -41,14 +41,14 @@ OrderBookType OrderBookEntry::stringToOrderBookType(string s) {
     return OrderBookType::unknown;
 }
 
-bool OrderBookEntry::compareByTimestamp(OrderBookEntry &e1, OrderBookEntry &e2) {
+bool OrderBookEntry::compareByTimestamp(const OrderBookEntry &e1, const OrderBookEntry &e2) {
     return e1.timestamp < e2.timestamp;
 }
 
-bool OrderBookEntry::compareByPriceAsc(OrderBookEntry &e1, OrderBookEntry &e2) {
+bool OrderBookEntry::compareByPriceAsc(const OrderBookEntry &e1, const OrderBookEntry &e2) {
     return e1.price < e2.price;
 }
 
-bool OrderBookEntry::compareByPriceDesc(OrderBookEntry &e1, OrderBookEntry &e2) {
+bool OrderBookEntry::compareByPriceDesc(const OrderBookEntry &e1, const OrderBookEntry &e2) {
     return e1.price > e2.price;
 }

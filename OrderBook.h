@@ -19,7 +19,7 @@ public:
     vector<string> getKnownProducts();
 
     /** return vector of Orders according to the sent filters*/
-    vector<OrderBookEntry> getOrders(OrderBookType type,
+    vector<OrderBookEntry> getOrders(const OrderBookType &type,
                                      const string &product,
                                      const string &timestamp);
 
@@ -32,13 +32,13 @@ public:
      * */
     string getNextTime(const string &timestamp);
 
-    void insertOrder(OrderBookEntry &order);
-
-    vector<OrderBookEntry> matchAsksToBids(const string &product, const string &timestamp);
+    void insertOrder(const OrderBookEntry &order);
 
     static double getHighPrice(vector<OrderBookEntry> &orders);
 
     static double getLowPrice(vector<OrderBookEntry> &orders);
+
+    vector<OrderBookEntry> matchAsksToBids(const string &product, const string &timestamp);
 
 private:
     vector<OrderBookEntry> orders;

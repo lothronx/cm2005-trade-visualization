@@ -68,9 +68,9 @@ OrderBookEntry CSVReader::stringsToOBE(vector<string> tokens) {
 
 OrderBookEntry CSVReader::stringsToOBE(const string &priceString,
                                        const string &amountString,
-                                       string timestamp,
-                                       string product,
-                                       OrderBookType orderType) {
+                                       const string &timestamp,
+                                       const string &product,
+                                       const OrderBookType &orderType) {
     double price, amount;
     try {
         price = stod(priceString);
@@ -82,8 +82,8 @@ OrderBookEntry CSVReader::stringsToOBE(const string &priceString,
     }
     OrderBookEntry obe{price,
                        amount,
-                       std::move(timestamp),
-                       std::move(product),
+                       timestamp,
+                       product,
                        orderType};
 
     return obe;

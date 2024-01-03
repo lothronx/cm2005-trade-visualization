@@ -35,13 +35,13 @@ public:
 
     void setUsername(string _username);
 
-    static OrderBookType stringToOrderBookType(string s);
+    static OrderBookType stringToOrderBookType(const string &s);
 
-    static bool compareByTimestamp(OrderBookEntry &e1, OrderBookEntry &e2);
+    static bool compareByTimestamp(const OrderBookEntry &e1, const OrderBookEntry &e2);
 
-    static bool compareByPriceAsc(OrderBookEntry &e1, OrderBookEntry &e2);
+    static bool compareByPriceAsc(const OrderBookEntry &e1, const OrderBookEntry &e2);
 
-    static bool compareByPriceDesc(OrderBookEntry &e1, OrderBookEntry &e2);
+    static bool compareByPriceDesc(const OrderBookEntry &e1, const OrderBookEntry &e2);
 
 private:
     double price;
