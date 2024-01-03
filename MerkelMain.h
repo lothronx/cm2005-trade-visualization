@@ -3,11 +3,10 @@
 #include <iostream>
 #include <vector>
 #include<map>
-#include "OrderBookEntry.h"
 #include "OrderBook.h"
-#include "Wallet.h"
 #include "CSVReader.h"
-#include "Candlestick.h"
+#include "Wallet.h"
+#include "Candlesticks.h"
 
 using namespace std;
 
