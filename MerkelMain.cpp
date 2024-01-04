@@ -137,7 +137,6 @@ void MerkelMain::gotoNextTimeframe() {
                 wallet.processSale(sale);
             }
         }
-
     }
     currentTime = orderBook.getNextTime(currentTime);
 }

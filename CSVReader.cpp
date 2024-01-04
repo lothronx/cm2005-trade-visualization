@@ -13,7 +13,8 @@ vector<OrderBookEntry> CSVReader::readCSV(const string &csvFilename) {
             } catch (const exception &e) {
                 cout << "CSVReader::readCSV bad data" << endl;
             }
-        }// end of while
+        }
+        csvFile.close();
     } else {
         cerr << "Cannot open file " << csvFilename << endl;
     }
@@ -39,7 +40,7 @@ vector<string> CSVReader::tokenise(const string &csvLine, char separator) {
     return tokens;
 }
 
-OrderBookEntry CSVReader::stringsToOBE(vector<string> tokens) {
+OrderBookEntry CSVReader::stringsToOBE(const vector<string> &tokens) {
     double price, amount;
 
     if (tokens.size() != 5) {

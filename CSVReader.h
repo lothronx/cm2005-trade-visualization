@@ -25,5 +25,5 @@ public:
                                        const OrderBookType &orderType);
 
 private:
-    static OrderBookEntry stringsToOBE(vector<string> strings);
+    static OrderBookEntry stringsToOBE(const vector<string> &strings);
 };
