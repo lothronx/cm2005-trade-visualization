@@ -180,7 +180,7 @@ int MerkelMain::getUserOption() {
     return userOption;
 }
 
-void MerkelMain::processUserOption(int userOption) {
+void MerkelMain::processUserOption(const int &userOption) {
 
     // I wrote the following code
     // map integers (keys) to function pointers (values)

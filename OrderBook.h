@@ -24,11 +24,11 @@ public:
                                      const string &timestamp);
 
 
-    static double getHighPrice(vector<OrderBookEntry> &orders);
+    static double getHighPrice(const vector<OrderBookEntry> &orders);
 
-    static double getLowPrice(vector<OrderBookEntry> &orders);
+    static double getLowPrice(const vector<OrderBookEntry> &orders);
 
-    static double getAveragePrice(vector<OrderBookEntry> &orders);
+    static double getAveragePrice(const vector<OrderBookEntry> &orders);
 
     /** returns the earliest time in the orderbook*/
     string getEarliestTime();

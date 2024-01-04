@@ -21,17 +21,17 @@ public:
 
     double getAmount() const;
 
-    void setAmount(double _amount);
-
     string getTimestamp() const;
 
     string getProduct() const;
 
     OrderBookType getOrderType() const;
 
-    void setOrderType(OrderBookType _orderType);
-
     string getUsername() const;
+
+    void setAmount(double _amount);
+
+    void setOrderType(OrderBookType _orderType);
 
     void setUsername(string _username);
 

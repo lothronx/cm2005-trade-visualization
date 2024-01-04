@@ -41,7 +41,7 @@ private:
 
     int getUserOption();
 
-    void processUserOption(int userOption);
+    void processUserOption(const int &userOption);
 
     string currentTime;
 

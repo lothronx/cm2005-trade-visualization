@@ -1,5 +1,7 @@
 #include "OrderBook.h"
 
+#include <ranges>
+
 /** construct, reading a csv data file */
 OrderBook::OrderBook(const string &filename)
         : orders{CSVReader::readCSV(filename)} {}
@@ -38,25 +40,25 @@ vector<OrderBookEntry> OrderBook::getOrders(const OrderBookType &type,
     return orders_sub;
 }
 
-double OrderBook::getHighPrice(vector<OrderBookEntry> &orders) {
+double OrderBook::getHighPrice(const vector<OrderBookEntry> &orders) {
     double max = orders[0].getPrice();
-    for (OrderBookEntry &e: orders) {
+    for (const OrderBookEntry &e: orders) {
         if (e.getPrice() > max)max = e.getPrice();
     }
     return max;
 }
 
-double OrderBook::getLowPrice(vector<OrderBookEntry> &orders) {
+double OrderBook::getLowPrice(const vector<OrderBookEntry> &orders) {
     double min = orders[0].getPrice();
-    for (OrderBookEntry &e: orders) {
+    for (const OrderBookEntry &e: orders) {
         if (e.getPrice() < min)min = e.getPrice();
     }
     return min;
 }
 
-double OrderBook::getAveragePrice(vector<OrderBookEntry> &orders) {
+double OrderBook::getAveragePrice(const vector<OrderBookEntry> &orders) {
     double sum{};
-    for (OrderBookEntry &e: orders) {
+    for (const OrderBookEntry &e: orders) {
         sum += e.getPrice();
     }
     double avg = sum / orders.size();
@@ -83,9 +85,9 @@ string OrderBook::getNextTime(const string &timestamp) {
 
 string OrderBook::getPreviousTime(const string &timestamp) {
     string previous_timestamp{};
-    for (auto it = orders.rbegin(); it != orders.rend(); ++it) {
-        if (it->getTimestamp() < timestamp) {
-            previous_timestamp = it->getTimestamp();
+    for (auto &order: ranges::reverse_view(orders)) {
+        if (order.getTimestamp() < timestamp) {
+            previous_timestamp = order.getTimestamp();
             break;
         }
     }
