@@ -15,7 +15,7 @@ public:
                    string _timestamp,
                    string _product,
                    OrderBookType _orderType,
-                   string _username = "dataset");
+                   string _username = {"dataset"});
 
     double getPrice() const;
 

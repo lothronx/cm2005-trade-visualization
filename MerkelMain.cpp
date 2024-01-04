@@ -159,8 +159,9 @@ void MerkelMain::printCandlesticks() {
         (tokens[1] != "ask" && tokens[1] != "bid")) {
         cout << "MerkelMain::printCandlesticks Bad input! Please use this format: ETH/BTC,bid" << endl;
     } else {
+        OrderBookType type{OrderBookEntry::stringToOrderBookType(tokens[1])};
         Candlesticks candlesticks{tokens[0],
-                                  OrderBookEntry::stringToOrderBookType(tokens[1]),
+                                  type,
                                   currentTime,
                                   orderBook};
         candlesticks.printTable();

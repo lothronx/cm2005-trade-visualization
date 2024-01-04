@@ -1,9 +1,9 @@
 #include "Candlesticks.h"
 
-Candlesticks::Candlesticks(string _product,
-                           OrderBookType _orderType,
-                           string _timestamp,
-                           OrderBook _orderBook) :
+Candlesticks::Candlesticks(string &_product,
+                           OrderBookType &_orderType,
+                           string &_timestamp,
+                           const OrderBook &_orderBook) :
         product{_product},
         orderType{_orderType},
         timestamp{_timestamp},
@@ -41,7 +41,7 @@ void Candlesticks::printTable() {
     }
 
     cout << endl
-         << setw(30) << "\033[1;51m  >>> " << type << "s on " << product << " <<<  \033[0m"
+         << setw(32) << "\033[1;51m  >>> " << type << "s on " << product << " <<<  \033[0m"
          << endl << endl;
 
     cout << "Time" << setw(15)

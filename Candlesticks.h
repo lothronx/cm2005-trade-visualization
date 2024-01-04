@@ -17,20 +17,20 @@ struct Candlestick {
 class Candlesticks {
 public:
     /** construct, each candlestick should have 5 parameters */
-    Candlesticks(string _product,
-                 OrderBookType _orderType,
-                 string _timestamp,
-                 OrderBook _orderBook);
+    Candlesticks(string &_product,
+                 OrderBookType &_orderType,
+                 string &_timestamp,
+                 const OrderBook &_orderBook);
 
     void printTable();
 
     void printPlot();
 
 private:
-    string product;
-    OrderBookType orderType;
-    string timestamp;
-    OrderBook orderBook;
+    string &product;
+    OrderBookType &orderType;
+    string &timestamp;
+    const OrderBook &orderBook;
 
     vector<Candlestick> compute();
 };

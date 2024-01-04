@@ -7,12 +7,12 @@ OrderBook::OrderBook(const string &filename)
         : orders{CSVReader::readCSV(filename)} {}
 
 /** return vector of all know products in the dataset*/
-vector<string> OrderBook::getKnownProducts() {
+vector<string> OrderBook::getKnownProducts() const {
     vector<string> products;
 
     map<string, bool> prodMap;
 
-    for (OrderBookEntry &e: orders) {
+    for (const OrderBookEntry &e: orders) {
         prodMap[e.getProduct()] = true;
     }
 
@@ -28,9 +28,9 @@ vector<string> OrderBook::getKnownProducts() {
 /** return vector of Orders according to the sent filters*/
 vector<OrderBookEntry> OrderBook::getOrders(const OrderBookType &type,
                                             const string &product,
-                                            const string &timestamp) {
+                                            const string &timestamp) const {
     vector<OrderBookEntry> orders_sub;
-    for (OrderBookEntry &e: orders) {
+    for (const OrderBookEntry &e: orders) {
         if (e.getOrderType() == type &&
             e.getProduct() == product &&
             e.getTimestamp() == timestamp) {
@@ -65,13 +65,13 @@ double OrderBook::getAveragePrice(const vector<OrderBookEntry> &orders) {
     return avg;
 }
 
-string OrderBook::getEarliestTime() {
+string OrderBook::getEarliestTime() const {
     return orders[0].getTimestamp();
 }
 
-string OrderBook::getNextTime(const string &timestamp) {
+string OrderBook::getNextTime(const string &timestamp) const {
     string next_timestamp{};
-    for (OrderBookEntry &e: orders) {
+    for (const OrderBookEntry &e: orders) {
         if (e.getTimestamp() > timestamp) {
             next_timestamp = e.getTimestamp();
             break;
@@ -83,7 +83,7 @@ string OrderBook::getNextTime(const string &timestamp) {
     return next_timestamp;
 }
 
-string OrderBook::getPreviousTime(const string &timestamp) {
+string OrderBook::getPreviousTime(const string &timestamp) const {
     string previous_timestamp{};
     for (auto &order: ranges::reverse_view(orders)) {
         if (order.getTimestamp() < timestamp) {
