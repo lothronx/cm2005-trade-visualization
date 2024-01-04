@@ -8,10 +8,10 @@ OrderBookEntry::OrderBookEntry(double _price,
                                string _username)
         : price{_price},
           amount{_amount},
-          timestamp{_timestamp},
-          product{_product},
+          timestamp{std::move(_timestamp)},
+          product{std::move(_product)},
           orderType{_orderType},
-          username{_username} {}
+          username{std::move(_username)} {}
 
 double OrderBookEntry::getPrice() const { return price; }
 
@@ -29,7 +29,7 @@ void OrderBookEntry::setAmount(double _amount) { amount = _amount; }
 
 void OrderBookEntry::setOrderType(OrderBookType _orderType) { orderType = _orderType; }
 
-void OrderBookEntry::setUsername(string _username) { username = _username; }
+void OrderBookEntry::setUsername(string _username) { username = std::move(_username); }
 
 OrderBookType OrderBookEntry::stringToOrderBookType(const string &s) {
     if (s == "ask") {

@@ -44,7 +44,7 @@ public:
     void insertOrder(const OrderBookEntry &order);
 
     vector<OrderBookEntry> matchAsksToBids(const string &product,
-                                           const string &timestamp);
+                                           const string &timestamp) const;
 
 private:
     vector<OrderBookEntry> orders;

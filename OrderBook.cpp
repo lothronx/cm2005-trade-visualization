@@ -18,7 +18,7 @@ vector<string> OrderBook::getKnownProducts() const {
 
     // now flatten the map to a vector of strings
     products.reserve(prodMap.size());
-    for (auto const &e: prodMap) {
+    for (const auto &e: prodMap) {
         products.push_back(e.first);
     }
 
@@ -85,7 +85,7 @@ string OrderBook::getNextTime(const string &timestamp) const {
 
 string OrderBook::getPreviousTime(const string &timestamp) const {
     string previous_timestamp{};
-    for (auto &order: ranges::reverse_view(orders)) {
+    for (const auto &order: ranges::reverse_view(orders)) {
         if (order.getTimestamp() < timestamp) {
             previous_timestamp = order.getTimestamp();
             break;
@@ -102,7 +102,7 @@ void OrderBook::insertOrder(const OrderBookEntry &order) {
     sort(orders.begin(), orders.end(), OrderBookEntry::compareByTimestamp);
 }
 
-vector<OrderBookEntry> OrderBook::matchAsksToBids(const string &product, const string &timestamp) {
+vector<OrderBookEntry> OrderBook::matchAsksToBids(const string &product, const string &timestamp) const {
 // asks = orderbook.asks
     vector<OrderBookEntry> asks = getOrders(OrderBookType::ask,
                                             product,

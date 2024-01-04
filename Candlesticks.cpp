@@ -29,6 +29,7 @@ void Candlesticks::compute() {
 
 }
 
+
 void Candlesticks::printTable() const {
     string type{};
     if (orderType == OrderBookType::ask) {
@@ -39,7 +40,8 @@ void Candlesticks::printTable() const {
 
     cout << endl
          << setw(32) << "\033[1;51m  >>> " << type << "s on " << product << " <<<  \033[0m"
-         << endl << endl;
+         << endl
+         << endl;
 
     cout << "Time" << setw(15)
          << "Open" << setw(15)
@@ -47,7 +49,7 @@ void Candlesticks::printTable() const {
          << "Low" << setw(15)
          << "Close" << endl;
 
-    for (auto &candlestick: ranges::reverse_view(candlesticks)) {
+    for (const auto &candlestick: ranges::reverse_view(candlesticks)) {
         if (candlestick.open < candlestick.close) {
             cout << "\033[32m";
         } else if (candlestick.open > candlestick.close) {
