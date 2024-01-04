@@ -1,37 +1,37 @@
 #include "CSVReader.h"
 
-vector<OrderBookEntry> CSVReader::readCSV(const string &csvFilename) {
-    vector<OrderBookEntry> entries;
+std::vector<OrderBookEntry> CSVReader::readCSV(const std::string &csvFilename) {
+    std::vector<OrderBookEntry> entries;
 
-    ifstream csvFile{csvFilename};
-    string line;
+    std::ifstream csvFile{csvFilename};
+    std::string line;
     if (csvFile.is_open()) {
         while (getline(csvFile, line)) {
             try {
                 OrderBookEntry obe = stringsToOBE(tokenise(line, ','));
                 entries.push_back(obe);
-            } catch (const exception &e) {
-                cout << "CSVReader::readCSV bad data" << endl;
+            } catch (const std::exception &e) {
+                std::cout << "CSVReader::readCSV bad data" << '\n';
             }
         }
         csvFile.close();
     } else {
-        cerr << "Cannot open file " << csvFilename << endl;
+        std::cerr << "Cannot open file " << csvFilename << '\n';
     }
 
-    cout << "CSVReader::readCSV read " << entries.size() << " entries" << endl;
+    std::cout << "CSVReader::readCSV read " << entries.size() << " entries" << '\n';
     return entries;
 }
 
-vector<string> CSVReader::tokenise(const string &csvLine, char separator) {
-    vector<string> tokens;
+std::vector<std::string> CSVReader::tokenise(const std::string &csvLine, char separator) {
+    std::vector<std::string> tokens;
 
     // I wrote the following code
     // turn csvLine into a stream
-    stringstream ss(csvLine);
+    std::stringstream ss(csvLine);
     // read tokens from the stream into a vector
     while (ss.good()) {
-        string token;
+        std::string token;
         getline(ss, token, separator);
         tokens.push_back(token);
     }
@@ -40,20 +40,20 @@ vector<string> CSVReader::tokenise(const string &csvLine, char separator) {
     return tokens;
 }
 
-OrderBookEntry CSVReader::stringsToOBE(const vector<string> &tokens) {
+OrderBookEntry CSVReader::stringsToOBE(const std::vector<std::string> &tokens) {
     double price, amount;
 
     if (tokens.size() != 5) {
-        cout << "Bad line " << endl;
-        throw exception{};
+        std::cout << "Bad line " << '\n';
+        throw std::exception{};
     }
 
     try {
         price = stod(tokens[3]);
         amount = stod(tokens[4]);
-    } catch (const exception &e) {
-        cout << "CSVReader::stringsToOBE Bad float! " << tokens[3] << endl;
-        cout << "CSVReader::stringsToOBE Bad float! " << tokens[4] << endl;
+    } catch (const std::exception &e) {
+        std::cout << "CSVReader::stringsToOBE Bad float! " << tokens[3] << '\n';
+        std::cout << "CSVReader::stringsToOBE Bad float! " << tokens[4] << '\n';
         throw;
     }
     OrderBookType type{OrderBookEntry::stringToOrderBookType(tokens[2])};
@@ -68,18 +68,18 @@ OrderBookEntry CSVReader::stringsToOBE(const vector<string> &tokens) {
 }
 
 
-OrderBookEntry CSVReader::stringsToOBE(const string &priceString,
-                                       const string &amountString,
-                                       const string &timestamp,
-                                       const string &product,
+OrderBookEntry CSVReader::stringsToOBE(const std::string &priceString,
+                                       const std::string &amountString,
+                                       const std::string &timestamp,
+                                       const std::string &product,
                                        const OrderBookType &orderType) {
     double price, amount;
     try {
         price = stod(priceString);
         amount = stod(amountString);
-    } catch (const exception &e) {
-        cout << "CSVReader::stringsToOBE Bad float! " << priceString << endl;
-        cout << "CSVReader::stringsToOBE Bad float! " << amountString << endl;
+    } catch (const std::exception &e) {
+        std::cout << "CSVReader::stringsToOBE Bad float! " << priceString << '\n';
+        std::cout << "CSVReader::stringsToOBE Bad float! " << amountString << '\n';
         throw;
     }
     OrderBookEntry obe{price,

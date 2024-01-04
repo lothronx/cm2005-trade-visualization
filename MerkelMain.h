@@ -11,8 +11,6 @@
 #include "Wallet.h"
 #include "Candlesticks.h"
 
-using namespace std;
-
 class MerkelMain {
 public:
     MerkelMain() = default;
@@ -43,7 +41,7 @@ private:
 
     void processUserOption(const int &userOption);
 
-    string currentTime;
+    std::string currentTime;
 
     OrderBook orderBook{"20200601.csv"};
 

@@ -8,22 +8,20 @@
 #include <utility>
 #include "OrderBookEntry.h"
 
-using namespace std;
-
 class CSVReader {
 public:
     CSVReader() = default;
 
-    static vector<OrderBookEntry> readCSV(const string &csvFile);
+    static std::vector<OrderBookEntry> readCSV(const std::string &csvFile);
 
-    static vector<string> tokenise(const string &csvLine, char separator);
+    static std::vector<std::string> tokenise(const std::string &csvLine, char separator);
 
-    static OrderBookEntry stringsToOBE(const string &price,
-                                       const string &amount,
-                                       const string &timestamp,
-                                       const string &product,
+    static OrderBookEntry stringsToOBE(const std::string &price,
+                                       const std::string &amount,
+                                       const std::string &timestamp,
+                                       const std::string &product,
                                        const OrderBookType &orderType);
 
 private:
-    static OrderBookEntry stringsToOBE(const vector<string> &strings);
+    static OrderBookEntry stringsToOBE(const std::vector<std::string> &strings);
 };

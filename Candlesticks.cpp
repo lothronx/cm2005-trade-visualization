@@ -1,8 +1,8 @@
 #include "Candlesticks.h"
 
-Candlesticks::Candlesticks(const string &_product,
+Candlesticks::Candlesticks(const std::string &_product,
                            const OrderBookType &_orderType,
-                           const string &_timestamp,
+                           const std::string &_timestamp,
                            const OrderBook &_orderBook) :
         product{_product},
         orderType{_orderType},
@@ -10,15 +10,15 @@ Candlesticks::Candlesticks(const string &_product,
         orderBook{_orderBook} {}
 
 void Candlesticks::compute() {
-    string time = timestamp;
-    for (int i = 0; i < 6; ++i) {
-        vector<OrderBookEntry> currentEntries = orderBook.getOrders(orderType,
-                                                                    product,
-                                                                    time);
+    std::string time = timestamp;
+    for (int i = 0; i < 12; ++i) {
+        std::vector<OrderBookEntry> currentEntries = orderBook.getOrders(orderType,
+                                                                         product,
+                                                                         time);
         time = orderBook.getPreviousTime(time);
-        vector<OrderBookEntry> previousEntries = orderBook.getOrders(orderType,
-                                                                     product,
-                                                                     time);
+        std::vector<OrderBookEntry> previousEntries = orderBook.getOrders(orderType,
+                                                                          product,
+                                                                          time);
         candlesticks.push_back({
                                        orderBook.getNextTime(time),
                                        OrderBook::getAveragePrice(previousEntries),
@@ -31,41 +31,41 @@ void Candlesticks::compute() {
 
 
 void Candlesticks::printTable() const {
-    string type{};
+    std::string type{};
     if (orderType == OrderBookType::ask) {
         type = "Ask";
     } else {
         type = "Bid";
     }
 
-    cout << endl
-         << setw(32) << "\033[1;51m  >>> " << type << "s on " << product << " <<<  \033[0m"
-         << endl
-         << endl;
+    std::cout << '\n'
+              << std::setw(32) << "\033[1;51m  >>> " << type << "s on " << product << " <<<  \033[0m"
+              << '\n'
+              << '\n';
 
-    cout << "Time" << setw(15)
-         << "Open" << setw(15)
-         << "High" << setw(15)
-         << "Low" << setw(15)
-         << "Close" << endl;
+    std::cout << "Time" << std::setw(15)
+              << "Open" << std::setw(15)
+              << "High" << std::setw(15)
+              << "Low" << std::setw(15)
+              << "Close" << '\n';
 
-    for (const auto &candlestick: ranges::reverse_view(candlesticks)) {
+    for (const auto &candlestick: std::ranges::reverse_view(candlesticks)) {
         if (candlestick.open < candlestick.close) {
-            cout << "\033[32m";
+            std::cout << "\033[32m";
         } else if (candlestick.open > candlestick.close) {
-            cout << "\033[31m";
+            std::cout << "\033[31m";
         } else {
-            cout << "\033[33m";
+            std::cout << "\033[33m";
         }
 
-        cout << (candlestick.time).substr(11, 8) << setw(15)
-             << candlestick.open << setw(15)
-             << candlestick.high << setw(15)
-             << candlestick.low << setw(15)
-             << candlestick.close << endl;
+        std::cout << (candlestick.time).substr(11, 8) << std::setw(15)
+                  << candlestick.open << std::setw(15)
+                  << candlestick.high << std::setw(15)
+                  << candlestick.low << std::setw(15)
+                  << candlestick.close << '\n';
     }
 
-    cout << "\033[0m" << endl;
+    std::cout << "\033[0m" << '\n';
 }
 
 void Candlesticks::printPlot() const {}

@@ -2,8 +2,6 @@
 
 #include <string>
 
-using namespace std;
-
 enum class OrderBookType {
     bid, ask, unknown, bidsale, asksale
 };
@@ -12,30 +10,30 @@ class OrderBookEntry {
 public:
     OrderBookEntry(double _price,
                    double _amount,
-                   string _timestamp,
-                   string _product,
+                   std::string _timestamp,
+                   std::string _product,
                    OrderBookType _orderType,
-                   string _username = {"dataset"});
+                   std::string _username = {"dataset"});
 
     double getPrice() const;
 
     double getAmount() const;
 
-    string getTimestamp() const;
+    std::string getTimestamp() const;
 
-    string getProduct() const;
+    std::string getProduct() const;
 
     OrderBookType getOrderType() const;
 
-    string getUsername() const;
+    std::string getUsername() const;
 
     void setAmount(double _amount);
 
     void setOrderType(OrderBookType _orderType);
 
-    void setUsername(string _username);
+    void setUsername(std::string _username);
 
-    static OrderBookType stringToOrderBookType(const string &s);
+    static OrderBookType stringToOrderBookType(const std::string &s);
 
     static bool compareByTimestamp(const OrderBookEntry &e1, const OrderBookEntry &e2);
 
@@ -46,8 +44,8 @@ public:
 private:
     double price;
     double amount;
-    string timestamp;
-    string product;
+    std::string timestamp;
+    std::string product;
     OrderBookType orderType;
-    string username;
+    std::string username;
 };

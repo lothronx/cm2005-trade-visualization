@@ -4,10 +4,8 @@
 #include <ranges>
 #include "OrderBook.h"
 
-using namespace std;
-
 struct Candlestick {
-    string time;
+    std::string time;
     double open;
     double high;
     double low;
@@ -17,9 +15,9 @@ struct Candlestick {
 class Candlesticks {
 public:
     /** construct, each candlestick should have 5 parameters */
-    Candlesticks(const string &_product,
+    Candlesticks(const std::string &_product,
                  const OrderBookType &_orderType,
-                 const string &_timestamp,
+                 const std::string &_timestamp,
                  const OrderBook &_orderBook);
 
     void compute();
@@ -29,9 +27,9 @@ public:
     void printPlot() const;
 
 private:
-    const string &product;
+    const std::string &product;
     const OrderBookType &orderType;
-    const string &timestamp;
+    const std::string &timestamp;
     const OrderBook &orderBook;
-    vector<Candlestick> candlesticks;
+    std::vector<Candlestick> candlesticks;
 };
