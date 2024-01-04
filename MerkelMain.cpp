@@ -164,7 +164,9 @@ void MerkelMain::printCandlesticks() {
                                   type,
                                   currentTime,
                                   orderBook};
+        candlesticks.compute();
         candlesticks.printTable();
+        candlesticks.printPlot();
     }
 }
 // end of my code

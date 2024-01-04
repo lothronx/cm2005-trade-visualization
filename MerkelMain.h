@@ -45,8 +45,7 @@ private:
 
     string currentTime;
 
-    // Because I'm using CLion to run the code, the relative path here is relative to the cmake-build-debug folder not the root folder. Thus, "../" is needed here.
-    OrderBook orderBook{"../20200601.csv"};
+    OrderBook orderBook{"20200601.csv"};
 
     Wallet wallet;
 

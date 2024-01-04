@@ -1,16 +1,15 @@
 #include "Candlesticks.h"
 
-Candlesticks::Candlesticks(string &_product,
-                           OrderBookType &_orderType,
-                           string &_timestamp,
+Candlesticks::Candlesticks(const string &_product,
+                           const OrderBookType &_orderType,
+                           const string &_timestamp,
                            const OrderBook &_orderBook) :
         product{_product},
         orderType{_orderType},
         timestamp{_timestamp},
         orderBook{_orderBook} {}
 
-vector<Candlestick> Candlesticks::compute() {
-    vector<Candlestick> candlesticks{};
+void Candlesticks::compute() {
     string time = timestamp;
     for (int i = 0; i < 6; ++i) {
         vector<OrderBookEntry> currentEntries = orderBook.getOrders(orderType,
@@ -27,12 +26,10 @@ vector<Candlestick> Candlesticks::compute() {
                                        OrderBook::getLowPrice(currentEntries),
                                        OrderBook::getAveragePrice(currentEntries)});
     }
-    return candlesticks;
+
 }
 
-void Candlesticks::printTable() {
-    vector<Candlestick> candlesticks = compute();
-
+void Candlesticks::printTable() const {
     string type{};
     if (orderType == OrderBookType::ask) {
         type = "Ask";
@@ -69,4 +66,4 @@ void Candlesticks::printTable() {
     cout << "\033[0m" << endl;
 }
 
-void Candlesticks::printPlot() {}
+void Candlesticks::printPlot() const {}
