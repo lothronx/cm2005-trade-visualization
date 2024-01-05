@@ -144,12 +144,10 @@ void MerkelMain::gotoNextTimeframe() {
 // I wrote the following code
 void MerkelMain::printCandlesticks() {
     std::cout
-            << "View the market trends in the past 60 seconds in candlesticks - enter: product,order type. E.g., BTC/USDT,bid"
-            << '\n';
+            << "View the market trends in the past 60 seconds in candlesticks.\nEnter: product,order type. E.g., BTC/USDT,bid\n";
 
     std::string input;
     getline(std::cin, input);
-
     std::vector<std::string> tokens = CSVReader::tokenise(input, ',');
 
     std::vector<std::string> productList{orderBook.getKnownProducts()};
@@ -157,11 +155,10 @@ void MerkelMain::printCandlesticks() {
     if (tokens.size() != 2 ||
         find(productList.begin(), productList.end(), tokens[0]) == productList.end() ||
         (tokens[1] != "ask" && tokens[1] != "bid")) {
-        std::cout << "MerkelMain::printCandlesticks Bad input! Please use this format: BTC/USDT,bid" << '\n';
+        std::cout << "MerkelMain::printCandlesticks Bad input! Please use the correct format. E.g., BTC/USDT,bid\n";
     } else {
-        OrderBookType type{OrderBookEntry::stringToOrderBookType(tokens[1])};
         Candlesticks candlesticks{tokens[0],
-                                  type,
+                                  tokens[1],
                                   currentTime,
                                   orderBook};
         candlesticks.compute();
