@@ -25,7 +25,9 @@ public:
 
     void printTable() const;
 
-    void printPlot() const;
+    void printCandlestickChart() const;
+
+    void printHistogram() const;
 
 private:
     const std::string &product;

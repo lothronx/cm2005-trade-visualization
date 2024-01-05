@@ -68,7 +68,7 @@ void Candlesticks::printTable() const {
     std::cout << "\033[0m" << '\n';
 }
 
-void Candlesticks::printPlot() const {
+void Candlesticks::printCandlestickChart() const {
     int plotHeight = 20;
     double highest = getHighest(candlesticks);
     double lowest = getLowest(candlesticks);
@@ -113,6 +113,10 @@ void Candlesticks::printPlot() const {
         std::cout << std::setw(11) << std::left << candlestick.time;
     }
     std::cout << '\n' << '\n';
+}
+
+void Candlesticks::printHistogram() const {
+
 }
 
 double Candlesticks::getHighest(const std::vector<Candlestick> &candlesticks) {

@@ -166,7 +166,8 @@ void MerkelMain::printCandlesticks() {
                                   orderBook};
         candlesticks.compute();
         candlesticks.printTable();
-        candlesticks.printPlot();
+        candlesticks.printCandlestickChart();
+        candlesticks.printHistogram();
     }
 }
 // end of my code
