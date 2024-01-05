@@ -30,7 +30,6 @@ void Candlesticks::compute() {
 
 }
 
-
 void Candlesticks::printTable() const {
     std::string type{};
     if (orderType == OrderBookType::ask) {
@@ -83,6 +82,7 @@ void Candlesticks::printPlot() const {
         double labelBelow = highest - (i + 1) * interval;
 
         std::cout << std::setw(11) << std::setfill(' ') << std::right << label << " │ ";
+
         for (const auto &candlestick: std::ranges::reverse_view(candlesticks)) {
             if (candlestick.open < candlestick.close) {
                 std::cout << "\033[32m";
