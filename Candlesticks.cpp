@@ -11,6 +11,7 @@ Candlesticks::Candlesticks(const std::string &_product,
 
 void Candlesticks::compute() {
     OrderBookType type{OrderBookEntry::stringToOrderBookType(orderType)};
+
     std::string time{timestamp};
 
     for (int i = 0; i < 12; ++i) {
@@ -181,5 +182,5 @@ void Candlesticks::drawXAxisLabels() const {
     std::cout << '\n';
 
     std::cout << std::setw(15) << std::setfill('-') << std::right << "│" << std::setw(135) << '\n'
-              << '\n';
+              << '\n' << '\n';
 }

@@ -144,7 +144,7 @@ void MerkelMain::gotoNextTimeframe() {
 // I wrote the following code
 void MerkelMain::printCandlesticks() {
     std::cout
-            << "View the market trends in the past 60 seconds in candlesticks.\nEnter: product,order type. E.g., BTC/USDT,bid\n";
+            << "View market data of the past 60 seconds in table, candlestick chart, and volume bar graph.\nEnter: product,order type. E.g., BTC/USDT,bid\n";
 
     std::string input;
     getline(std::cin, input);
