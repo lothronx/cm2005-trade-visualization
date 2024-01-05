@@ -144,7 +144,7 @@ void MerkelMain::gotoNextTimeframe() {
 // I wrote the following code
 void MerkelMain::printCandlesticks() {
     std::cout
-            << "View the market trends in the past 60 seconds in candlesticks - enter: product,order type. E.g., ETH/BTC,bid"
+            << "View the market trends in the past 60 seconds in candlesticks - enter: product,order type. E.g., BTC/USDT,bid"
             << '\n';
 
     std::string input;
@@ -157,7 +157,7 @@ void MerkelMain::printCandlesticks() {
     if (tokens.size() != 2 ||
         find(productList.begin(), productList.end(), tokens[0]) == productList.end() ||
         (tokens[1] != "ask" && tokens[1] != "bid")) {
-        std::cout << "MerkelMain::printCandlesticks Bad input! Please use this format: ETH/BTC,bid" << '\n';
+        std::cout << "MerkelMain::printCandlesticks Bad input! Please use this format: BTC/USDT,bid" << '\n';
     } else {
         OrderBookType type{OrderBookEntry::stringToOrderBookType(tokens[1])};
         Candlesticks candlesticks{tokens[0],

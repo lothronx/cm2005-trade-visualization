@@ -2,6 +2,7 @@
 
 #include <string>
 #include <ranges>
+#include <iostream>
 #include "OrderBook.h"
 
 struct Candlestick {
@@ -32,4 +33,8 @@ private:
     const std::string &timestamp;
     const OrderBook &orderBook;
     std::vector<Candlestick> candlesticks;
+
+    static double getHighest(const std::vector<Candlestick> &candlesticks);
+
+    static double getLowest(const std::vector<Candlestick> &candlesticks);
 };
