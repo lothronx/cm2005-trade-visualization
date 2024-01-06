@@ -164,7 +164,7 @@ void MerkelMain::printCandlesticks() {
         candlesticks.compute();
         candlesticks.printTable();
         candlesticks.printCandlestickChart();
-        candlesticks.printHistogram();
+        candlesticks.printVolumeBars();
     }
 }
 // end of my code

@@ -97,7 +97,7 @@ void Candlesticks::printCandlestickChart() const {
     drawXAxisLabels();
 }
 
-void Candlesticks::printHistogram() const {
+void Candlesticks::printVolumeBars() const {
     Candlesticks::drawHeaderRow("Volume");
     int plotHeight = 20;
     auto highest = static_cast<double>(getHighestVolume(candlesticks));

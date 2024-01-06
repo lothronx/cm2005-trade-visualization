@@ -28,7 +28,7 @@ public:
 
     void printCandlestickChart() const;
 
-    void printHistogram() const;
+    void printVolumeBars() const;
 
 private:
     std::vector<Candlestick> candlesticks;
@@ -47,7 +47,7 @@ private:
 
     static unsigned long getHighestVolume(const std::vector<Candlestick> &candlesticks);
 
-    void drawHeaderRow(const std::string &name) const;
+    void drawHeaderRow(const std::string &yAxisVariable) const;
 
     void drawXAxisLabels() const;
 };
