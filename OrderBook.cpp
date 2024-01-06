@@ -1,7 +1,5 @@
 #include "OrderBook.h"
 
-#include <ranges>
-
 /** construct, reading a csv data file */
 OrderBook::OrderBook(const std::string &filename)
         : orders{CSVReader::readCSV(filename)} {}
@@ -40,39 +38,6 @@ std::vector<OrderBookEntry> OrderBook::getOrders(const OrderBookType &type,
     return orders_sub;
 }
 
-double OrderBook::getVolume(const std::vector<OrderBookEntry> &orders) {
-    double sum{};
-    for (const OrderBookEntry &e: orders) {
-        sum += (e.getAmount() * e.getPrice());
-    }
-    return sum;
-}
-
-double OrderBook::getHighPrice(const std::vector<OrderBookEntry> &orders) {
-    double max = orders[0].getPrice();
-    for (const OrderBookEntry &e: orders) {
-        if (e.getPrice() > max)max = e.getPrice();
-    }
-    return max;
-}
-
-double OrderBook::getLowPrice(const std::vector<OrderBookEntry> &orders) {
-    double min = orders[0].getPrice();
-    for (const OrderBookEntry &e: orders) {
-        if (e.getPrice() < min)min = e.getPrice();
-    }
-    return min;
-}
-
-double OrderBook::getAveragePrice(const std::vector<OrderBookEntry> &orders) {
-    double sum{};
-    for (const OrderBookEntry &e: orders) {
-        sum += e.getPrice();
-    }
-    double avg = sum / orders.size();
-    return avg;
-}
-
 std::string OrderBook::getEarliestTime() const {
     return orders[0].getTimestamp();
 }
@@ -91,19 +56,31 @@ std::string OrderBook::getNextTime(const std::string &timestamp) const {
     return next_timestamp;
 }
 
+
+// ============================
+// I wrote the following code
+// ============================
+/** returns the previous time before the sent time in the order book
+ * If there is no previous timestamp, wraps around to the start
+ */
 std::string OrderBook::getPreviousTime(const std::string &timestamp) const {
     std::string previous_timestamp{};
+    // loop through the orders in reverse
     for (const auto &order: std::ranges::reverse_view(orders)) {
         if (order.getTimestamp() < timestamp) {
             previous_timestamp = order.getTimestamp();
             break;
         }
     }
+    // If there is no previous timestamp, wraps around to the start
     if (previous_timestamp.empty()) {
         previous_timestamp = orders[0].getTimestamp();
     }
     return previous_timestamp;
 }
+// ============================
+//        End of my code
+// ============================
 
 void OrderBook::insertOrder(const OrderBookEntry &order) {
     orders.push_back(order);
@@ -214,3 +191,44 @@ std::vector<OrderBookEntry> OrderBook::matchAsksToBids(const std::string &produc
     }
     return sales;
 }
+
+double OrderBook::getHighPrice(const std::vector<OrderBookEntry> &orders) {
+    double max = orders[0].getPrice();
+    for (const OrderBookEntry &e: orders) {
+        if (e.getPrice() > max)max = e.getPrice();
+    }
+    return max;
+}
+
+double OrderBook::getLowPrice(const std::vector<OrderBookEntry> &orders) {
+    double min = orders[0].getPrice();
+    for (const OrderBookEntry &e: orders) {
+        if (e.getPrice() < min)min = e.getPrice();
+    }
+    return min;
+}
+
+// ============================
+// I wrote the following code
+// ============================
+/** returns the average price of the given orders */
+double OrderBook::getAveragePrice(const std::vector<OrderBookEntry> &orders) {
+    double sum{};
+    for (const OrderBookEntry &e: orders) {
+        sum += e.getPrice();
+    }
+    double avg = sum / static_cast<double>(orders.size());
+    return avg;
+}
+
+/** returns the volume (sum of amount*price) of the given orders */
+double OrderBook::getVolume(const std::vector<OrderBookEntry> &orders) {
+    double sum{};
+    for (const OrderBookEntry &e: orders) {
+        sum += (e.getAmount() * e.getPrice());
+    }
+    return sum;
+}
+// ============================
+//        End of my code
+// ============================

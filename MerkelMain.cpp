@@ -6,10 +6,19 @@ void MerkelMain::init() {
     wallet.insertCurrency("BTC", 10);
 
     currentTime = orderBook.getEarliestTime();
-    // because we offer users the option to print previous market trends, we can't start from the earliest timestamp--there will be no trends to print! Let's start from the 13th timestamp instead.
+
+    // ============================
+    // I wrote the following code
+    // ============================
+    // because we offer users the option to print the market stats in the past 60 seconds,
+    // we can't start from the earliest timestamp--there will be no stats to print!
+    // Let's start from the 13th timestamp instead.
     for (int i = 0; i < 12; ++i) {
         currentTime = orderBook.getNextTime(currentTime);
     }
+    // ============================
+    //        End of my code
+    // ============================
 
     while (true) {
         printMenu();
@@ -31,7 +40,7 @@ void MerkelMain::printMenu() {
               << "5: Print wallet " << '\n'
               // 6 continue
               << "6: Continue " << '\n'
-
+              // 7 print candlesticks
               << "7: Print candlesticks " << '\n'
 
               << "============== " << '\n'
@@ -39,9 +48,18 @@ void MerkelMain::printMenu() {
               << "Current time is: " << currentTime << '\n';
 }
 
+
+// ============================
+// I wrote the following code
+// ============================
+/** Print an error message */
 void MerkelMain::printError() {
     std::cout << "Invalid choice. Choose 1-7" << '\n';
 }
+// ============================
+//        End of my code
+// ============================
+
 
 void MerkelMain::printHelp() {
     std::cout << "Help - your aim is to make money. Analyse the market and make bids and offers. " << '\n';
@@ -49,12 +67,12 @@ void MerkelMain::printHelp() {
 
 void MerkelMain::printMarketStats() {
     for (std::string const &p: orderBook.getKnownProducts()) {
-        std::cout << "Product: " << p << '\n';
         std::vector<OrderBookEntry> entries = orderBook.getOrders(OrderBookType::ask,
                                                                   p, currentTime);
-        std::cout << "Asks seen: " << entries.size() << '\n';
-        std::cout << "Max ask: " << OrderBook::getHighPrice(entries) << '\n';
-        std::cout << "Min ask: " << OrderBook::getLowPrice(entries) << '\n';
+        std::cout << "Product: " << p << '\n'
+                  << "Asks seen: " << entries.size() << '\n'
+                  << "Max ask: " << OrderBook::getHighPrice(entries) << '\n'
+                  << "Min ask: " << OrderBook::getLowPrice(entries) << '\n';
 
     }
 }
@@ -141,22 +159,41 @@ void MerkelMain::gotoNextTimeframe() {
     currentTime = orderBook.getNextTime(currentTime);
 }
 
+// ============================
 // I wrote the following code
+// ============================
+/** Print the trading data of the past 60 seconds for a product and order type */
 void MerkelMain::printCandlesticks() {
+    // print the instructions
     std::cout
             << "View market data of the past 60 seconds in table, candlestick chart, and volume bar graph.\nEnter: product,order type. E.g., BTC/USDT,bid\n";
 
+    // get the user input
     std::string input;
     getline(std::cin, input);
-    std::vector<std::string> tokens = CSVReader::tokenise(input, ',');
 
+    // tokenise the user input and trim the leading and trailing whitespaces
+    std::vector<std::string> tokens = CSVReader::tokenise(input, ',');
+    tokens[0] = std::regex_replace(tokens[0], std::regex("^ +| +$|( ) +"), "$1");
+    tokens[1] = std::regex_replace(tokens[1], std::regex("^ +| +$|( ) +"), "$1");
+
+    // get the list of known products
     std::vector<std::string> productList{orderBook.getKnownProducts()};
 
+    // validate the user input
+    // if the tokens vector does not have a size of 2,
+    // or if the first token is not a known product,
+    // or if the second token is neither "ask" nor "bid",
+    // then the user input is invalid
     if (tokens.size() != 2 ||
         find(productList.begin(), productList.end(), tokens[0]) == productList.end() ||
         (tokens[1] != "ask" && tokens[1] != "bid")) {
+        // for invalid user input, print the error message
         std::cout << "MerkelMain::printCandlesticks Bad input! Please use the correct format. E.g., BTC/USDT,bid\n";
     } else {
+        // for valid user input, pass the necessary information to instantiate a Candlesticks object
+        // and call its member functions to do the computation,
+        // then print the results in table, candlestick chart, and volume bar graph respectively
         Candlesticks candlesticks{tokens[0],
                                   tokens[1],
                                   currentTime,
@@ -167,7 +204,9 @@ void MerkelMain::printCandlesticks() {
         candlesticks.printVolumeBars();
     }
 }
-// end of my code
+// ============================
+//        End of my code
+// ============================
 
 int MerkelMain::getUserOption() {
     int userOption = 0;
@@ -183,7 +222,9 @@ int MerkelMain::getUserOption() {
 
 void MerkelMain::processUserOption(const int &userOption) {
 
+    // ============================
     // I wrote the following code
+    // ============================
     // map integers (keys) to function pointers (values)
     std::map<int, void (MerkelMain::*)()> menu;
     menu[0] = &MerkelMain::printError;
@@ -203,5 +244,7 @@ void MerkelMain::processUserOption(const int &userOption) {
         // otherwise, print the error message
         printError();
     }
-    // end of my code
+    // ============================
+    //        End of my code
+    // ============================
 }

@@ -14,7 +14,13 @@ std::vector<OrderBookEntry> CSVReader::readCSV(const std::string &csvFilename) {
                 std::cout << "CSVReader::readCSV bad data" << '\n';
             }
         }
+        // ============================
+        // I wrote the following code
+        // ============================
         csvFile.close();
+        // ============================
+        //        End of my code
+        // ============================
     } else {
         std::cerr << "Cannot open file " << csvFilename << '\n';
     }
@@ -26,16 +32,21 @@ std::vector<OrderBookEntry> CSVReader::readCSV(const std::string &csvFilename) {
 std::vector<std::string> CSVReader::tokenise(const std::string &csvLine, char separator) {
     std::vector<std::string> tokens;
 
+    // ============================
     // I wrote the following code
+    // ============================
     // turn csvLine into a stream
     std::stringstream ss(csvLine);
+
     // read tokens from the stream into a vector
     while (ss.good()) {
         std::string token;
         getline(ss, token, separator);
         tokens.push_back(token);
     }
-    // end of my code
+    // ============================
+    //        End of my code
+    // ============================
 
     return tokens;
 }

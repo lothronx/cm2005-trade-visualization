@@ -6,6 +6,7 @@
 #include<map>
 #include <ranges>
 #include <algorithm>
+#include <regex>
 #include "OrderBook.h"
 #include "CSVReader.h"
 #include "Wallet.h"
@@ -21,7 +22,14 @@ public:
 private:
     void printMenu();
 
+    // ============================
+    // I wrote the following code
+    // ============================
+    /** Print an error message */
     void printError();
+    // ============================
+    //        End of my code
+    // ============================
 
     void printHelp();
 
@@ -35,7 +43,14 @@ private:
 
     void gotoNextTimeframe();
 
+    // ============================
+    // I wrote the following code
+    // ============================
+    /** Print the trading data of the past 60 seconds for a product and order type */
     void printCandlesticks();
+    // ============================
+    //        End of my code
+    // ============================
 
     int getUserOption();
 

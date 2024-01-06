@@ -15,6 +15,9 @@ public:
                    OrderBookType _orderType,
                    std::string _username = {"dataset"});
 
+    // ============================
+    // I wrote the following code
+    // ============================
     double getPrice() const;
 
     double getAmount() const;
@@ -32,6 +35,9 @@ public:
     void setOrderType(OrderBookType _orderType);
 
     void setUsername(std::string _username);
+    // ============================
+    //        End of my code
+    // ============================
 
     static OrderBookType stringToOrderBookType(const std::string &s);
 

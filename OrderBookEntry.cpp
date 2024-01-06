@@ -13,6 +13,9 @@ OrderBookEntry::OrderBookEntry(double _price,
           orderType{_orderType},
           username{std::move(_username)} {}
 
+// ============================
+// I wrote the following code
+// ============================
 double OrderBookEntry::getPrice() const { return price; }
 
 double OrderBookEntry::getAmount() const { return amount; }
@@ -30,6 +33,9 @@ void OrderBookEntry::setAmount(double _amount) { amount = _amount; }
 void OrderBookEntry::setOrderType(OrderBookType _orderType) { orderType = _orderType; }
 
 void OrderBookEntry::setUsername(std::string _username) { username = std::move(_username); }
+// ============================
+//        End of my code
+// ============================
 
 OrderBookType OrderBookEntry::stringToOrderBookType(const std::string &s) {
     if (s == "ask") {
