@@ -30,7 +30,7 @@ void Candlesticks::compute() {
                                        OrderBook::getHighPrice(currentEntries),
                                        OrderBook::getLowPrice(currentEntries),
                                        OrderBook::getAveragePrice(currentEntries),
-                                       currentEntries.size()}
+                                       OrderBook::getVolume(currentEntries)}
         );
 
         time = previousTime;
@@ -77,7 +77,7 @@ void Candlesticks::printCandlestickChart() const {
         double yAxisLabel = highest - i * interval;
         double yAxisLabelBelow = highest - (i + 1) * interval;
 
-        std::cout << std::setw(11) << std::setfill(' ') << std::right << yAxisLabel << " │ ";
+        std::cout << std::setw(15) << std::setfill(' ') << std::right << yAxisLabel << " │ ";
 
         for (const auto &candlestick: std::ranges::reverse_view(candlesticks)) {
             setColor(candlestick);
@@ -100,7 +100,7 @@ void Candlesticks::printCandlestickChart() const {
 void Candlesticks::printVolumeBars() const {
     Candlesticks::drawHeaderRow("Volume");
     int plotHeight = 20;
-    auto highest = static_cast<double>(getHighestVolume(candlesticks));
+    auto highest = getHighestVolume(candlesticks);
     double interval = highest / plotHeight;
 
     // Draw the chart
@@ -108,12 +108,14 @@ void Candlesticks::printVolumeBars() const {
 
         double yAxisLabel = highest - i * interval;
 
-        std::cout << std::setw(11) << std::setfill(' ') << std::right << yAxisLabel << " │ ";
+        std::cout << std::setw(15) << std::setfill(' ') << std::right << yAxisLabel << " │ ";
 
         for (const auto &candlestick: std::ranges::reverse_view(candlesticks)) {
-            (yAxisLabel > static_cast<double>(candlestick.volume)
+            setColor(candlestick);
+            (yAxisLabel > candlestick.volume
              ? std::cout << "           "
              : std::cout << "   █████   ");
+            clearColor();
         }
         std::cout << '\n';
     }
@@ -121,19 +123,6 @@ void Candlesticks::printVolumeBars() const {
     drawXAxisLabels();
 }
 
-void Candlesticks::setColor(const Candlestick &candlestick) {
-    if (candlestick.open < candlestick.close) {
-        std::cout << "\033[32m";
-    } else if (candlestick.open > candlestick.close) {
-        std::cout << "\033[31m";
-    } else {
-        std::cout << "\033[33m";
-    }
-}
-
-void Candlesticks::clearColor() {
-    std::cout << "\033[0m";
-}
 
 double Candlesticks::getHighestPrice(const std::vector<Candlestick> &candlesticks) {
     double highest = candlesticks[0].high;
@@ -155,8 +144,8 @@ double Candlesticks::getLowestPrice(const std::vector<Candlestick> &candlesticks
     return lowest;
 }
 
-unsigned long Candlesticks::getHighestVolume(const std::vector<Candlestick> &candlesticks) {
-    unsigned long highest = candlesticks[0].volume;
+double Candlesticks::getHighestVolume(const std::vector<Candlestick> &candlesticks) {
+    double highest = candlesticks[0].volume;
     for (const auto &candlestick: candlesticks) {
         if (candlestick.volume > highest) {
             highest = candlestick.volume;
@@ -165,22 +154,36 @@ unsigned long Candlesticks::getHighestVolume(const std::vector<Candlestick> &can
     return highest;
 }
 
+void Candlesticks::setColor(const Candlestick &candlestick) {
+    if (candlestick.open < candlestick.close) {
+        std::cout << "\033[32m";
+    } else if (candlestick.open > candlestick.close) {
+        std::cout << "\033[31m";
+    } else {
+        std::cout << "\033[33m";
+    }
+}
+
+void Candlesticks::clearColor() {
+    std::cout << "\033[0m";
+}
+
 void Candlesticks::drawHeaderRow(const std::string &yAxisVariable) const {
-    std::cout << std::setw(15) << std::setfill('-') << std::right << "│" << std::setw(135) << '\n'
-              << std::setw(11) << std::setfill(' ') << yAxisVariable << " │ "
+    std::cout << std::setw(19) << std::setfill('-') << std::right << "│" << std::setw(135) << '\n'
+              << std::setw(15) << std::setfill(' ') << yAxisVariable << " │ "
               << std::setw(60) << "\033[1m  >>> " << orderType << "s on " << product << " <<<  \033[0m" << '\n'
-              << std::setw(15) << std::setfill('-') << "│" << std::setw(135) << '\n';
+              << std::setw(19) << std::setfill('-') << "│" << std::setw(135) << '\n';
 }
 
 void Candlesticks::drawXAxisLabels() const {
-    std::cout << std::setw(15) << std::setfill('-') << std::right << "│" << std::setw(135) << '\n';
+    std::cout << std::setw(19) << std::setfill('-') << std::right << "│" << std::setw(135) << '\n';
 
-    std::cout << std::setw(11) << std::setfill(' ') << "Time" << " │   ";
+    std::cout << std::setw(15) << std::setfill(' ') << "Time" << " │   ";
     for (const auto &candlestick: std::ranges::reverse_view(candlesticks)) {
         std::cout << std::setw(11) << std::left << candlestick.time;
     }
     std::cout << '\n';
 
-    std::cout << std::setw(15) << std::setfill('-') << std::right << "│" << std::setw(135) << '\n'
+    std::cout << std::setw(19) << std::setfill('-') << std::right << "│" << std::setw(135) << '\n'
               << '\n' << '\n';
 }

@@ -21,6 +21,7 @@ public:
                                           const std::string &product,
                                           const std::string &timestamp) const;
 
+    static double getVolume(const std::vector<OrderBookEntry> &orders);
 
     static double getHighPrice(const std::vector<OrderBookEntry> &orders);
 

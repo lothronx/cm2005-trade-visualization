@@ -11,12 +11,11 @@ struct Candlestick {
     double high;
     double low;
     double close;
-    unsigned long volume;
+    double volume;
 };
 
 class Candlesticks {
 public:
-    /** construct, each candlestick should have 5 parameters */
     Candlesticks(const std::string &_product,
                  const std::string &_orderType,
                  const std::string &_timestamp,
@@ -32,20 +31,23 @@ public:
 
 private:
     std::vector<Candlestick> candlesticks;
+
+    // Parameters
     const std::string &product;
     const std::string &orderType;
     const std::string &timestamp;
     const OrderBook &orderBook;
 
-    static void setColor(const Candlestick &candlestick);
-
-    static void clearColor();
-
+    // Helper functions
     static double getHighestPrice(const std::vector<Candlestick> &candlesticks);
 
     static double getLowestPrice(const std::vector<Candlestick> &candlesticks);
 
-    static unsigned long getHighestVolume(const std::vector<Candlestick> &candlesticks);
+    static double getHighestVolume(const std::vector<Candlestick> &candlesticks);
+
+    static void setColor(const Candlestick &candlestick);
+
+    static void clearColor();
 
     void drawHeaderRow(const std::string &yAxisVariable) const;
 

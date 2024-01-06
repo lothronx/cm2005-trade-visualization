@@ -40,6 +40,14 @@ std::vector<OrderBookEntry> OrderBook::getOrders(const OrderBookType &type,
     return orders_sub;
 }
 
+double OrderBook::getVolume(const std::vector<OrderBookEntry> &orders) {
+    double sum{};
+    for (const OrderBookEntry &e: orders) {
+        sum += (e.getAmount() * e.getPrice());
+    }
+    return sum;
+}
+
 double OrderBook::getHighPrice(const std::vector<OrderBookEntry> &orders) {
     double max = orders[0].getPrice();
     for (const OrderBookEntry &e: orders) {
