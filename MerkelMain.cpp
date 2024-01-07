@@ -10,7 +10,7 @@ void MerkelMain::init() {
     // ============================
     // I wrote the following code
     // ============================
-    // because we offer users the option to print the market stats in the past 60 seconds,
+    // because we offer users the option to print the market stats of the past 60 seconds,
     // we can't start from the earliest timestamp--there will be no stats to print!
     // Let's start from the 13th timestamp instead.
     for (int i = 0; i < 12; ++i) {
