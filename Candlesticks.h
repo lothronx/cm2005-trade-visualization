@@ -60,14 +60,13 @@ private:
     const OrderBook &orderBook;
 
     // ==================Helper functions====================
-    /** Return the highest price of the given candlesticks */
-    static double getHighestPrice(const std::vector<Candlestick> &candlesticks);
+    /** Print the header row of the plot.
+     * @param yAxisVariable: the variable name to be displayed on the y-axis
+     */
+    void drawHeaderRow(const std::string &yAxisVariable) const;
 
-    /** Return the lowest price of the given candlesticks */
-    static double getLowestPrice(const std::vector<Candlestick> &candlesticks);
-
-    /** Return the highest volume of the given candlesticks */
-    static double getHighestVolume(const std::vector<Candlestick> &candlesticks);
+    /** Print the x-axis labels. The x-axis labels are the timestamps. */
+    void drawXAxisLabels() const;
 
     /* Set the color of the candlestick based on the open and close price.
      - If the close price is higher than the open price, the candlestick is green.
@@ -79,13 +78,16 @@ private:
     /** reset the color to default */
     static void clearColor();
 
-    /** Print the header row of the plot.
-     * @param yAxisVariable: the variable name to be displayed on the y-axis
-     */
-    void drawHeaderRow(const std::string &yAxisVariable) const;
+    /** Return the highest price of the given candlesticks */
+    static double getHighestPrice(const std::vector<Candlestick> &candlesticks);
 
-    /** Print the x-axis labels. The x-axis labels are the timestamps. */
-    void drawXAxisLabels() const;
+    /** Return the lowest price of the given candlesticks */
+    static double getLowestPrice(const std::vector<Candlestick> &candlesticks);
+
+    /** Return the highest volume of the given candlesticks */
+    static double getHighestVolume(const std::vector<Candlestick> &candlesticks);
+
+
 };
 
 // ============================

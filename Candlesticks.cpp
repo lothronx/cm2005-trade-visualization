@@ -181,6 +181,55 @@ void Candlesticks::printVolumeBars() const {
 }
 
 
+/** Print the header row of the plot.
+* @param yAxisVariable: the variable name to be displayed on the y-axis
+*/
+void Candlesticks::drawHeaderRow(const std::string &yAxisVariable) const {
+    std::cout << std::setw(19) << std::setfill('-') << std::right << "│" << std::setw(135) << '\n'
+              << std::setw(15) << std::setfill(' ') << yAxisVariable << " │ "
+              << std::setw(60) << "\033[1m  >>> " << orderType << "s on " << product << " <<<  \033[0m" << '\n'
+              << std::setw(19) << std::setfill('-') << "│" << std::setw(135) << '\n';
+}
+
+
+/** Print the x-axis labels. The x-axis labels are the timestamps. */
+void Candlesticks::drawXAxisLabels() const {
+    std::cout << std::setw(19) << std::setfill('-') << std::right << "│" << std::setw(135) << '\n';
+
+    // print the x-axis labels (from the oldest to the most recent)
+    std::cout << std::setw(15) << std::setfill(' ') << "Time" << " │   ";
+    for (const auto &candlestick: std::ranges::reverse_view(candlesticks)) {
+        std::cout << std::setw(11) << std::left << candlestick.time;
+    }
+    std::cout << '\n';
+
+    std::cout << std::setw(19) << std::setfill('-') << std::right << "│" << std::setw(135) << '\n'
+              << '\n' << '\n';
+}
+
+
+/* Set the color of the candlestick based on the open and close price.
+- If the open price is lower than the close price, the candlestick is green.
+- If the open price is higher than the close price, the candlestick is red.
+- If the open price is equal to the close price, the candlestick is yellow.
+*/
+void Candlesticks::setColor(const Candlestick &candlestick) {
+    if (candlestick.open < candlestick.close) {
+        std::cout << "\033[32m";
+    } else if (candlestick.open > candlestick.close) {
+        std::cout << "\033[31m";
+    } else {
+        std::cout << "\033[33m";
+    }
+}
+
+
+/** reset the color to default */
+void Candlesticks::clearColor() {
+    std::cout << "\033[0m";
+}
+
+
 /** Return the highest price of the given candlesticks */
 double Candlesticks::getHighestPrice(const std::vector<Candlestick> &candlesticks) {
     double highest = candlesticks[0].high;
@@ -215,56 +264,6 @@ double Candlesticks::getHighestVolume(const std::vector<Candlestick> &candlestic
     }
     return highest;
 }
-
-
-/* Set the color of the candlestick based on the open and close price.
-- If the open price is lower than the close price, the candlestick is green.
-- If the open price is higher than the close price, the candlestick is red.
-- If the open price is equal to the close price, the candlestick is yellow.
-*/
-void Candlesticks::setColor(const Candlestick &candlestick) {
-    if (candlestick.open < candlestick.close) {
-        std::cout << "\033[32m";
-    } else if (candlestick.open > candlestick.close) {
-        std::cout << "\033[31m";
-    } else {
-        std::cout << "\033[33m";
-    }
-}
-
-
-/** reset the color to default */
-void Candlesticks::clearColor() {
-    std::cout << "\033[0m";
-}
-
-
-/** Print the header row of the plot.
-* @param yAxisVariable: the variable name to be displayed on the y-axis
-*/
-void Candlesticks::drawHeaderRow(const std::string &yAxisVariable) const {
-    std::cout << std::setw(19) << std::setfill('-') << std::right << "│" << std::setw(135) << '\n'
-              << std::setw(15) << std::setfill(' ') << yAxisVariable << " │ "
-              << std::setw(60) << "\033[1m  >>> " << orderType << "s on " << product << " <<<  \033[0m" << '\n'
-              << std::setw(19) << std::setfill('-') << "│" << std::setw(135) << '\n';
-}
-
-
-/** Print the x-axis labels. The x-axis labels are the timestamps. */
-void Candlesticks::drawXAxisLabels() const {
-    std::cout << std::setw(19) << std::setfill('-') << std::right << "│" << std::setw(135) << '\n';
-
-    // print the x-axis labels (from the oldest to the most recent)
-    std::cout << std::setw(15) << std::setfill(' ') << "Time" << " │   ";
-    for (const auto &candlestick: std::ranges::reverse_view(candlesticks)) {
-        std::cout << std::setw(11) << std::left << candlestick.time;
-    }
-    std::cout << '\n';
-
-    std::cout << std::setw(19) << std::setfill('-') << std::right << "│" << std::setw(135) << '\n'
-              << '\n' << '\n';
-}
-
 // ============================
 //        End of my code
 // ============================
