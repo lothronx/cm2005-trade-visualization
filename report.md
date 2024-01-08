@@ -146,7 +146,7 @@ Now that we have coded the `Candlesticks` class, we can instantiate a `Candlesti
 
 ## TASK 2: Visualize the data in a candlestick chart
 
-For task 2, my goal is to visualize the previously computed trading data in a candlestick chart. To do so, I added a new public method `printCandlestickChart` to the `Candlesticks` class. This method is then called in the `printCandlesticks` function within the `MerkelMain` class.
+For task 2, my goal is to visualize the previously computed trading data in a candlestick chart. To do so, I added a new public method `printCandlestickChart` to the `Candlesticks` class.
 
 Considering that text is displayed row by row in the console, we can break down a candlestick chart into three sections: the header at the top, the main plot (featuring y-axis labels on the left and the candlesticks on the right), and the x-axis labels situated at the bottom.
 
@@ -177,8 +177,46 @@ Similar to the header row, x-axis label printing functionality is divided into a
 
 The x-axis variable is time. The x-axis labels should be the timestamps of the candlesticks. Since the timestamps are already stored in the candlesticks vector, we can simply iterate through the candlesticks vector and print them out. Because the timestamp strings are too long to look pretty, I also decided to refactor the `compute` class and only store a substring of the timestamp string in candlesticks vector. Instead of storing "2020-01-01 00:00:00.00000", I only store "00:00:00". I also adjusted the width of the output stream to make sure that the x-axis labels are vertically aligned with the candlesticks.
 
-## TASK 3: visualize some trading data in a volume bar graph
+### 2.4 Call the `printCandlestickChart` function
+
+Now that the `printCandlestickChart` function is coded, I can call it in the `printCandlesticks` function within the `MerkelMain` class to visualize the trading statistics in a candlestick chart.
+
+## TASK 3: Visualize the trading volume in a volume bar graph
+
+For task 3, my goal is to build upon the code I wrote for task 1 and 2 and visualize the trading volume in a volume bar graph, illustrating the total value of asks or bids of a certain product during a specific time period. The trading volume of a product and an order type at a particular timestamp is calculated by the following formula:
+
+```
+Volume = order1.price * order1.amount + order2.price * order2.amount + ... + orderN.price * orderN.amount
+```
+
+For implementation, first, I created a helper function in the `OrderBook` class called `getVolume` to perform the above calculation. The `getVolume` function takes a vector of orders as input and returns the trading volume of the orders.
+
+Then, I added a new field called `volume` to the `Candlestick` structure.
+
+Next, I edited the `compute` function in the `Candlesticks` class. Now, in each loop of calculation, it will also calculate the trading volume of all of orders of the current timestamp and store it in the `volume` field of the `Candlestick` object before pushing the `Candlestick` object to the candlesticks vector.
+
+After that, I created a new public method called `printVolumeBars` in the `Candlesticks` class. The implementation of the `printVolumeBars` function is very similar to the `printCandlestickChart` function. It involves the same three sections: the header at the top, the main plot (featuring y-axis labels on the left and the volume bars on the right), and the x-axis labels situated at the bottom. The `drawHeaderRow`, `drawXAxisLabels`, `setColor`, and `clearColor` functions are reused here. The only difference is that, when printing the main body of the plot, for the maximum value on the y-axis, I create an additional helper function called `getHighestVolume` to calculate the maximum trading volume of all timestamps. I set the minimum value on the y-axis to 0. For volume bar printing, if the current y axis label is larger than the volume, I will print blank space. Else, I will print the volume bar.
+
+Finally, I called the `printVolumeBars` function in the `printCandlesticks` function within the `MerkelMain` class to visualize the trading volume in a volume bar graph.
+
+Hence, in summary, other than the constructor, the `Candlesticks` class has 4 public member functions in total: `compute`, `printTable`, `printCandlestickChart`, and `printVolumeBars`. They all works on the same member variable `std::vector<Candlestick> candlesticks` and exhibits common environment coupling. In the `printCandlesticks` function within the `MerkelMain` class, I instantiated a `Candlesticks` object first, and then called its `compute`, `printTable`, `printCandlestickChart`, and `printVolumeBars` functions in sequence to perform the computation and visualization. Such is my solution to task 1-3.
 
 ## Other changes made to the source code
+
+In addition to the above changes, I also made some other changes to the source code to make it more clean and efficient. They are as follows:
+
+- I refactored the source code and make functions and variables const whenever possible to avoid unexpected changes. When passing objects around, I passed them by reference whenever possible to avoid unnecessary copying.
+
+- In creating new member variables and functions, I made them private whenever possible to avoid exposing unnecessary details to the outside world. This follows the encapsulation and abstraction principles in object-oriented programming.
+
+- I refactored the `processUserOption` function in the `MerkelMain` class. Instead of using if-else statements, I used the map function to map user input to the corresponding function. This reduces the number of lines of code and makes the code more concise and readable.
+
+- I refactored the `tokenise` function in the `CSVReader` class. By turn the input string into a string stream, I can use the `getline` function to tokenize the string by a delimiter. This makes the code more concise and readable.
+
+- I closed the file stream in the `readCSV` function in the `CSVReader` class after reading the file. 
+
+- In the `OrderBookEntry` class, I made the member variables private and added getter and setter functions to access and modify them. This follows the encapsulation principle in object-oriented programming.
+
+All the additional changes made my code cleaner, more readable, and take less time to run.
 
 ## which aspects of your work that were challenging/ original/ creative/ exceptional.
