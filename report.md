@@ -8,15 +8,15 @@ My goal for the midterm assignment is to enable users to view market data of the
 
 ## TASK 1: Structure the program, compute the data, and print the table
 
-For task 1, my goal is that given a product and order type, the program can compute its trading statistics of the past 60 seconds and print the results in a table. To do so, following the object oriented programming principle, I created a new class `Candlesticks` as well as made changes to the `OrderBook` class and `MerkelMain` class.
+For task 1, my goal is that, given a product and order type, the program can compute its trading statistics of the past 60 seconds and print the results in a table. To do so, following the object oriented programming principle, I created a new class `Candlesticks` as well as made changes to the `OrderBook` class and `MerkelMain` class.
 
 ### 1.1 Change the program start time
 
-Firstly, I examined the source code and noticed that the program begins with the earliest timestamp. The program then moves to the subsequent timestamp whenever the user inputs "6" and triggers the `gotoNextTimeframe` function.
+First, I examined the source code and noticed that the program begins with the earliest timestamp. The program then moves to the subsequent timestamp whenever the user inputs "6" and triggers the `gotoNextTimeframe` function.
 
 The midterm instructions require students to visualize trading statistics. It would be strange to visualize statistics for "the future" since they haven't occurred yet. Therefore, I set my objective to display trading statistics from the past 60 seconds.
 
-However, if the program started from the very first timestamp, there would be no trading history to analyze and display. To address this, I decided to have my program start from the 13th timestamp, which is 65 seconds after the earliest timestamp. (The gap between each timestamp is 5 seconds.)
+However, if the program started from the very first timestamp, there would be no trading history to analyze and display at all. To address this, I decided to have my program start from the 13th timestamp, which is 65 seconds after the earliest timestamp. (The gap between each timestamp is 5 seconds.)
 
 In the `MerkelMain` class, I made the program start from the 13th timestamp by amending the `init` function and looping the `currentTime` member variable 12 times in the `getNextTime` function before everything else.
 
@@ -24,24 +24,12 @@ In the `MerkelMain` class, I made the program start from the 13th timestamp by a
 
 In the source code, the menu has 6 options. The trading statistic visualization functionality will be the 7th option. I decided to call it `printCandlesticks`. In the `MerkelMain` class, I amended the `printMenu`, `getUserOption`, and `processUserOption` functions accordingly to include the new option.
 
-Additionally, I refactored the `processUserOption` function. As an alternative to the if-else statements in the source code, I used the map function to map user input to the corresponding function. This reduces the number of lines of code and makes the code more concise and readable.
-
-Also, the error handling was not robust enough in the source code. If user enters an integer that is not in the menu, for example "999", the program will crash. The map function can solve this problem by the following code:
-
-```C++
-if (menu.find(userOption) != menu.end()) {
-        // process user option
-    } else {
-        printError();
-    }
-```
-
 ### 1.3 Create the `printCandlesticks` function
 
-For step 3, I implemented the `printCandlesticks` function in the `MerkelMain` class. The structure of the `printCandlesticks` function is similar to the `enterAsk` function in the source code.
+Next, I implemented the `printCandlesticks` function in the `MerkelMain` class. The structure of the `printCandlesticks` function is similar to the `enterAsk` function in the source code.
 
 - First, it prints the instructions.
-- Then, it takes user input and tokenizes it into tokens. Here, I also used regex functions to trim the leading and trailing whitespace from the tokens. This makes my program more user friendly.
+- Then, it takes user input and tokenises it into tokens. Here, I also used regex functions to trim the leading and trailing whitespace from the tokens. This makes my program more user friendly.
 - Next, I validate whether the user input is valid by checking whether the number of tokens is 2, whether the first token is a valid product name, and whether the second token is a valid order type.
 - If the tokens are invalid, the program will print an error message.
 - Otherwise, the program will pass the tokens along with other necessary information to initialize a `Candlesticks` object and leave the rest of the work to the `Candlesticks` class.
@@ -56,9 +44,9 @@ My considerations and decisions are as follows:
 
 #### 1.4.1 Member variables
 
-What outside information does the `Candlesticks` class need to perform the computation? The `Candlesticks` class needs the product name and order type to be sure. It also need to know the current time. Moreover, in order to analyze the orders of the past 60 seconds, it needs to have access to the order book. Thus, the `Candlesticks` class needs 4 constructor parameters in total: `product`, `orderType`, `timestamp`, and `orderBook`. They should be passed by reference to avoid unnecessary copying.
+What outside information does the `Candlesticks` class need to perform the computation? The `Candlesticks` class needs the product name and order type to be sure. It also need to know the current time. Moreover, in order to analyze the orders of the past 60 seconds, it needs to have access to the order book. Thus, the `Candlesticks` class needs 4 constructor parameters in total: `product`, `orderType`, `timestamp`, and `orderBook`. They should all be passed by reference to avoid unnecessary copying.
 
-How should the `Candlesticks` class store the computed data? My decision is to use a vector of `Candlestick` objects. Each `Candlestick` object should store the open, close, high, and low prices of one timestamp. Since the `Candlestick` structure is simple, I decided to define it as a structure instead of a class:
+How should the `Candlesticks` class store the computed data? My decision is to use a vector of `Candlestick` objects. Each `Candlestick` object should store the open, close, high, and low prices of one timestamp. Since the content of `Candlestick` is simple, I decided to define it as a c++ structure instead of a class:
 
 ```C++
 struct Candlestick {
@@ -70,7 +58,7 @@ struct Candlestick {
 };
 ```
 
-Hence, the `Candlesticks` class should have 5 member variables in total. They should all be private. Other than the candlesticks vector which we will edit later, the other 4 member variables should also be constants.
+Hence, the `Candlesticks` class should have 5 member variables in total. They should all be private.
 
 ```C++
 std::vector<Candlestick> candlesticks;
@@ -136,9 +124,7 @@ The `printTable` function should print the candlesticks vector in a table. The i
 
 The set color and reset color features will be used again later in task 2 and task 3, thus I separated them into private member functions called `setColor` and `clearColor`. Such separation of concerns follows the DRY principle and is a good practice in object-oriented programming.
 
-Moreover, `compute` and `printTable` functions neither take any parameters nor return any values. Instead, they exhibits common environment coupling. This reduces interdependence and follows a good practice in object-oriented programming.
-
-Another important detail to note is that, considering users' habits, I iterated through the candlesticks vector in reverse order. This ensures that the table displays the oldest timestamp at the top and the most recent timestamp at the bottom.
+Another important detail to note is that, considering users' habits, I iterated through the candlesticks vector in reverse order. This ensures that the table displays the oldest timestamp at the top and the most recent timestamp at the bottom. I will do the same in task 2 and task 3.
 
 ### 1.5 Call the `Candlesticks` class and its member functions
 
@@ -148,11 +134,11 @@ Now that we have coded the `Candlesticks` class, we can instantiate a `Candlesti
 
 For task 2, my goal is to visualize the previously computed trading data in a candlestick chart. To do so, I added a new public method `printCandlestickChart` to the `Candlesticks` class.
 
-Considering that text is displayed row by row in the console, we can break down a candlestick chart into three sections: the header at the top, the main plot (featuring y-axis labels on the left and the candlesticks on the right), and the x-axis labels situated at the bottom.
+Considering that text is displayed row by row in the console, we can break down a candlestick chart into three sections: the header at the top, the main plot (featuring y-axis labels on the left and the candlesticks on the right), and the x-axis labels at the bottom.
 
 ### 2.1 Print the header row
 
-Since the header row will be needed again for task 3, it's better to divide it into a separate private helper function called `drawHeaderRow` and call it within the `printCandlestickChart` function. To distinguish the header rows between task 2 and task 3, I also included the y axis variable name as a parameter in the `drawHeaderRow` function and print it above the y-axis on the header row.
+Since the header row will be needed again for task 3, it's better to divide it into a separate private helper function called `drawHeaderRow` and call it within the `printCandlestickChart` function. To distinguish the header rows between task 2 and task 3, I also included the y axis variable name as a parameter in the `drawHeaderRow` function and have it printed above the y-axis.
 
 ### 2.2 Print the main body
 
@@ -165,7 +151,7 @@ To print the main plot, I first created 4 local variables to set up its basic st
 
 The maximum value on the y-axis should be the highest price of all prices within the candlesticks vector. I created a helper function called `getHighestPrice` to calculate this value. Similarly, the minimum value on the y-axis should be the lowest price of all prices. I created another helper function called `getLowestPrice` to do the calculation. The interval between each row should be the difference between the maximum and minimum values divided by the plot height minus one, since, for example, there will be only 19 intervals between 20 rows.
 
-Now that I have set up the basic structure of the plot, I can start to print the y-axis labels. Looping through the plot height, I created a local variable called `yAxisLabel`. The value of `yAxisLabel` is calculated by deducting the interval from the highest value row by row. I then print the labels.
+Now that I have set up the basic structure of the plot, I can start to print the y-axis labels. Looping through the plot height, I created a local variable called `yAxisLabel`. The value of y axis label is calculated by deducting the interval from the highest value row by row. I then print the labels.
 
 Next, in each row, to the right of the y axis label, I need to print the candlesticks. To do so, I looped through the candlesticks vector. For each candlestick, if the current y axis label is within the range of the open and close prices of the candlestick, I print a candle box. Else if the current y axis label is within the range of the high and low prices of the candlestick, I print a candle stick. Else, I print some blank space. I also made sure that the candle box, the candle stick, and the blank space are all the same width, thus everything can be vertically aligned. Of course, I also made use of the `setColor` and `clearColor` functions I coded earlier in task 1.
 
@@ -189,7 +175,7 @@ For task 3, my goal is to build upon the code I wrote for task 1 and 2 and visua
 Volume = order1.price * order1.amount + order2.price * order2.amount + ... + orderN.price * orderN.amount
 ```
 
-For implementation, first, I created a helper function in the `OrderBook` class called `getVolume` to perform the above calculation. The `getVolume` function takes a vector of orders as input and returns the trading volume of the orders.
+For implementation, first, I created a helper function in the `OrderBook` class called `getVolume` to perform the above calculation. The `getVolume` function takes a vector of orders as input and returns the trading volume of the orders as output.
 
 Then, I added a new field called `volume` to the `Candlestick` structure.
 
@@ -203,20 +189,30 @@ Hence, in summary, other than the constructor, the `Candlesticks` class has 4 pu
 
 ## Other changes made to the source code
 
-In addition to the above changes, I also made some other changes to the source code to make it more clean and efficient. They are as follows:
+In addition to the changes above, I also made some other changes to the source code to make it more clean and efficient. They are as follows:
 
-- I refactored the source code and make functions and variables const whenever possible to avoid unexpected changes. When passing objects around, I passed them by reference whenever possible to avoid unnecessary copying.
+- I refactored the source code and make functions and variables const whenever possible to avoid unexpected changes. 
+
+- When passing objects around, I passed them by reference whenever possible to avoid unnecessary copying.
 
 - In creating new member variables and functions, I made them private whenever possible to avoid exposing unnecessary details to the outside world. This follows the encapsulation and abstraction principles in object-oriented programming.
 
 - I refactored the `processUserOption` function in the `MerkelMain` class. Instead of using if-else statements, I used the map function to map user input to the corresponding function. This reduces the number of lines of code and makes the code more concise and readable.
 
+- I improved the error handling in the `processUserOption` function in the `MerkelMain` class. In the source code, if user enters a string that can be turned into an integer that is not in the menu, for example "999", the program will crash. I solved this issue with the following code:
+
+```C++
+if (menu.find(userOption) != menu.end()) {
+        // process user option
+    } else {
+        printError();
+    }
+```
+
 - I refactored the `tokenise` function in the `CSVReader` class. By turn the input string into a string stream, I can use the `getline` function to tokenize the string by a delimiter. This makes the code more concise and readable.
 
-- I closed the file stream in the `readCSV` function in the `CSVReader` class after reading the file. 
+- In the `readCSV` function in the `CSVReader` class, I closed the file stream after reading the file. 
 
 - In the `OrderBookEntry` class, I made the member variables private and added getter and setter functions to access and modify them. This follows the encapsulation principle in object-oriented programming.
 
-All the additional changes made my code cleaner, more readable, and take less time to run.
-
-## which aspects of your work that were challenging/ original/ creative/ exceptional.
+All the additional changes made my code cleaner, more readable, more robust, and take less time to run.
