@@ -144,9 +144,38 @@ Another important detail to note is that, considering users' habits, I iterated 
 
 Now that we have coded the `Candlesticks` class, we can instantiate a `Candlesticks` object and call its `compute` and `printTable` methods in the `printCandlesticks` function in the `MerkelMain` class. Now, when the user enters "7" in the menu, the program will print the trading statistics of the past 60 seconds in a table.
 
-## TASK 2: visualize the data in a candlestick chart
+## TASK 2: Visualize the data in a candlestick chart
 
-For task 2, my goal is to visualize the trading data in a candlestick chart.
+For task 2, my goal is to visualize the previously computed trading data in a candlestick chart. To do so, I added a new public method `printCandlestickChart` to the `Candlesticks` class. This method is then called in the `printCandlesticks` function within the `MerkelMain` class.
+
+Considering that text is displayed row by row in the console, we can break down a candlestick chart into three sections: the header at the top, the main plot (featuring y-axis labels on the left and the candlesticks on the right), and the x-axis labels situated at the bottom.
+
+### 2.1 Print the header row
+
+Since the header row will be needed again for task 3, it's better to divide it into a separate private helper function called `drawHeaderRow` and call it within the `printCandlestickChart` function. To distinguish the header rows between task 2 and task 3, I also included the y axis variable name as a parameter in the `drawHeaderRow` function and print it above the y-axis on the header row.
+
+### 2.2 Print the main body
+
+To print the main plot, I first created 4 local variables to set up its basic structure:
+
+- `plotHeight`: the number of rows in the main body
+- `highest`: maximum value on the y-axis
+- `lowest`: minimum value on the y-axis
+- `interval`: the interval between each row
+
+The maximum value on the y-axis should be the highest price of all prices within the candlesticks vector. I created a helper function called `getHighestPrice` to calculate this value. Similarly, the minimum value on the y-axis should be the lowest price of all prices. I created another helper function called `getLowestPrice` to do the calculation. The interval between each row should be the difference between the maximum and minimum values divided by the plot height minus one, since, for example, there will be only 19 intervals between 20 rows.
+
+Now that I have set up the basic structure of the plot, I can start to print the y-axis labels. Looping through the plot height, I created a local variable called `yAxisLabel`. The value of `yAxisLabel` is calculated by deducting the interval from the highest value row by row. I then print the labels.
+
+Next, in each row, to the right of the y axis label, I need to print the candlesticks. To do so, I looped through the candlesticks vector. For each candlestick, if the current y axis label is within the range of the open and close prices of the candlestick, I print a candle box. Else if the current y axis label is within the range of the high and low prices of the candlestick, I print a candle stick. Else, I print some blank space. I also made sure that the candle box, the candle stick, and the blank space are all the same width, thus everything can be vertically aligned. Of course, I also made use of the `setColor` and `clearColor` functions I coded earlier in task 1.
+
+After I finished the prior steps, I found a new problem: because the open and close prices of a candlestick can be very close to each other, there is no y axis label within their range. I am printing a candle stick without box. This is not ideal. To solve this problem, I decided to change my strategy. I created another local variable called `yAxisLabelBelow` and set its value to the label below the current one. Instead of printing a candle box when current y axis label is within the range of the open and close prices of the candlestick, I now print a candle box when the open and close prices is within the range of the current label and the label below. In other words, instead of the open and close prices wrapping the current label, I now let the two labels wrap the open and close prices. This way, I can ensure that there will always be a candle box to print in each candlestick.
+
+### 2.3 Print the x-axis labels
+
+Similar to the header row, x-axis label printing functionality is divided into a separate private helper function called `drawXAxisLabels`. It will also be reused in task 3.
+
+The x-axis variable is time. The x-axis labels should be the timestamps of the candlesticks. Since the timestamps are already stored in the candlesticks vector, we can simply iterate through the candlesticks vector and print them out. Because the timestamp strings are too long to look pretty, I also decided to refactor the `compute` class and only store a substring of the timestamp string in candlesticks vector. Instead of storing "2020-01-01 00:00:00.00000", I only store "00:00:00". I also adjusted the width of the output stream to make sure that the x-axis labels are vertically aligned with the candlesticks.
 
 ## TASK 3: visualize some trading data in a volume bar graph
 
