@@ -6,6 +6,16 @@
 
 > A sophisticated C++ application that processes cryptocurrency trading data and visualizes market statistics through interactive console-based charts and tables.
 
+## 🎬 Live Demo
+
+<div align="center">
+
+[![Watch Demo](https://img.shields.io/badge/Watch-Demo-red?style=for-the-badge&logo=youtube)](https://www.youtube.com/watch?v=9SWZQrTzp4g&ab_channel=WuYue)
+
+[![Watch Demo](https://img.youtube.com/vi/9SWZQrTzp4g/0.jpg)](https://www.youtube.com/watch?v=9SWZQrTzp4g&ab_channel=WuYue)
+
+</div>
+
 ## 🎯 Project Overview
 
 This project is a comprehensive trading data analysis system developed as part of the **CM2005 Object-Oriented Programming** course. The application processes real cryptocurrency market data (BTC/USDT) and provides users with three distinct visualization methods for analyzing trading patterns over 60-second intervals.
