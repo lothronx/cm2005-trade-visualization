@@ -12,7 +12,11 @@
 
 [![Watch Demo](https://img.shields.io/badge/Watch-Demo-red?style=for-the-badge&logo=youtube)](https://www.youtube.com/watch?v=9SWZQrTzp4g&ab_channel=WuYue)
 
-[![Watch Demo](https://img.youtube.com/vi/9SWZQrTzp4g/0.jpg)](https://www.youtube.com/watch?v=9SWZQrTzp4g&ab_channel=WuYue)
+[![Watch Demo](demo/1.png)](https://www.youtube.com/watch?v=9SWZQrTzp4g&ab_channel=WuYue)
+
+[![Watch Demo](demo/2.png)](https://www.youtube.com/watch?v=9SWZQrTzp4g&ab_channel=WuYue)
+
+[![Watch Demo](demo/3.png)](https://www.youtube.com/watch?v=9SWZQrTzp4g&ab_channel=WuYue)
 
 </div>
 
